@@ -1,0 +1,31 @@
+{
+  "name": "sun-locke-scripts-v2",
+  "version": "1.0.0",
+  "description": "AI-powered assistant for Google Sheets",
+  "main": "src/index.ts",
+  "scripts": {
+    "login": "clasp login",
+    "create": "clasp create --type sheets",
+    "push": "clasp push",
+    "watch": "clasp push --watch --force",
+    "watch-ts": "tsc --watch",
+    "dev": "concurrently \"npm run watch\" \"npm run watch-ts\"",
+    "deploy": "clasp deploy",
+    "build": "tsc",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@types/google-apps-script": "^1.0.78"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.11",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "clasp": "^1.0.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.56.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.3.3"
+  }
+}

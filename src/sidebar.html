@@ -1,0 +1,3681 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @font-face {
+        font-family: "Tobias";
+        src: url("https://cdn.prod.website-files.com/6729490eec7b4529805b89b0/67294db34e09df3300cdb6b6_Tobias-SemiBold.otf")
+          format("opentype");
+        font-weight: 600;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "Eudoxussans";
+        src: url("https://cdn.prod.website-files.com/6729490eec7b4529805b89b0/67294e2ba09195f2164cd8c8_EudoxusSans-Medium.ttf")
+          format("truetype");
+        font-weight: 500;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "Eudoxussans";
+        src: url("https://cdn.prod.website-files.com/6729490eec7b4529805b89b0/67294e2b28a7757a3a2f4ce0_EudoxusSans-Regular.ttf")
+          format("truetype");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      :root {
+        --border-color: #717f96;
+        --text-color: #000000;
+        --secondary-text: #717f96;
+        --bg-white: #ffffff;
+        --border-light: #f9f9f8;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Eudoxussans", sans-serif;
+        color: var(--text-color);
+        background-color: var(--bg-white);
+        line-height: 1.25;
+      }
+
+      .container {
+        width: auto;
+        height: 100vh;
+        background: var(--bg-white);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .nav-bar {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        border-bottom: 1px solid var(--border-color);
+        background-image: url("https://cdn.prod.website-files.com/6729490eec7b4529805b89b0/672a999005880769679222cb_bg_color.png");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+
+      .menu-icon {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        padding: 6px;
+        flex-direction: column;
+        justify-content: center;
+        border-right: 1px solid var(--border-color);
+        cursor: pointer;
+      }
+
+
+      .action-buttons span {
+        font-size: 12px;
+        font-weight: 400;
+        font-family: "Eudoxussans";
+      }
+
+      .action-buttons svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      .nav-title {
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .main-content {
+        width: 100%;
+        flex: 1;
+        padding: 6px 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .model-selectors {
+        width: 100%;
+        padding: 6px 8px;
+        padding-bottom: 12px;
+        margin-bottom: 6px;
+        gap: 4%;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+
+      .model-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-grow: 1;
+        gap: 4px;
+      }
+
+      .model-label {
+        color: var(--secondary-text);
+        font-size: 10px;
+        font-weight: 400;
+        font-family: "Eudoxussans";
+        line-height: 1.25;
+        text-align: center;
+      }
+
+      .model-selector {
+        background: var(--bg-white);
+        border-radius: 8px;
+        width: 100%;
+        padding: 4px 6px;
+        border: 0.5px solid white;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: center;
+        gap: 2px;
+        stroke: var(--border-light);
+        stroke-width: 1px;
+        filter: drop-shadow(1px 1px 0px currentColor);
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 1.5px 3px rgba(255, 255, 255, 0.5),
+                    0px 0.375px 1.125px rgba(255, 255, 255, 0.7),
+                    0px 0px 4.5px rgba(255, 255, 255, 0.9),
+                    0px 3px 6px #69C57D,
+                    0px 2.625px 4.125px #549E64,
+                    0px 2.25px 3.75px #3F764B;     
+        transition: box-shadow 200ms ease-out, transform 100ms ease-out;
+        cursor: pointer;
+      }
+
+      .model-button {
+        background: var(--bg-white);
+        width: 100%;
+        display: flex;
+        align-items: center;
+        font-size: 10px;
+        font-weight: 500;
+        white-space: nowrap;
+        justify-content: space-between;
+        font-family: inherit;
+        flex-grow: 1;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      .model-selector:hover {
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 2px 4px rgba(255, 255, 255, 0.5),
+                    0px 0.75px 2.25px rgba(255, 255, 255, 0.7), 
+                    0px 0px 6px rgba(255, 255, 255, 0.9),
+                    0px 4.5px 9px #69C57D,
+                    0px 3.75px 7.5px #549E64,
+                    0px 3px 6px #3F764B;
+      }
+
+      .model-selector:active {
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                     inset 0px 0.375px 1.5px #3F764B,
+                     0px 1.125px 2.25px rgba(255, 255, 255, 0.70),
+                     0px 0.75px 1.5px rgba(255, 255, 255, 0.80), 
+                     0px 0.19px 0.375px #FFF,
+                     0px 0px 4.5px #FFF,
+                     0px 3px 6px #69C57D,
+                     0px 2.25px 4.5px #549E64,
+                     0px 1.5px 3px #3F764B;
+        transform: scale(0.99);
+      }
+
+      .model-button::after {
+        content: url('data:image/svg+xml;utf8,<svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L5 5.5L9 1.5" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+        font-size: 8px;
+        margin-left: 4px;
+        color: var(--secondary-text);
+      }
+
+      .action-buttons {
+        width: 100%;
+        padding: 6px;
+        border: none;
+        
+        background: var(--bg-white);
+        border-radius: 12px;
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                   0px 0px 8px rgba(4, 0, 255, 0.25);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        stroke: var(--border-light);
+        stroke-width: 1px;
+        transition: box-shadow 375ms ease-out;
+      }
+
+      .action-buttons:hover {
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 0px 8px rgba(4, 0, 255, 0.5);
+        transition-duration: 375ms;
+      }
+
+      .action-button {
+        height: 27px;
+        max-width: 80px;
+        flex: 1;
+        padding: 8px 6px;
+        background: var(--bg-white);
+        border: none;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 400;
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1);
+        color: var(--text-color);
+        cursor: pointer;
+        white-space: nowrap;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .action-button:active {
+        transform: scale(0.99);
+        transition-duration: 100ms;
+        box-shadow: inset 0 1px 4px rgba(156, 180, 0, 1);
+      }
+
+      .action-button:active .tool-icon {
+        /* transform: scale(1.01); */ /* Counter the parent scale to keep SVG at original size */
+      }
+
+      .action-button.active {
+        box-shadow: inset 0 1px 4px rgba(156, 180, 0, 1);
+        transform: scale(0.99);
+      }
+
+      .action-button.active::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: #69C57D;
+        border-radius: 2px;
+      }
+
+      .tools-list {
+        width: 100%;
+        display: none;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .custom-prompt-section,
+      .tools-section,
+      .history-section,
+      .help-section {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .tool-item {
+        width: 100%;
+        padding: 8px 12px;
+        background: var(--bg-white);
+        border: 0.5px solid #ffffff;
+        border-radius: 100px;
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                   0px 4px 4px 0px rgba(156, 180, 0, 0.25);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: inherit;
+        cursor: pointer;
+        stroke: var(--border-light);
+        stroke-width: 0.5px;
+        transition: all 200ms ease-out;
+      }
+
+      .tool-item:hover {
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 4px 8px 0px rgba(156, 180, 0, 0.5);
+        transition-duration: 375ms;
+      }
+
+      .tool-item:active {
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    inset 0px 1px 4px 0px rgba(156, 180, 0, 1);
+        transform: scale(0.99);
+        transition-duration: 100ms;
+      }
+
+      .tool-content {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .action-button .tool-icon{
+        width: 14px;
+        height: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+      }
+      .tool-icon{
+        width: 20px;
+        height: 20px;
+      }
+
+      .tool-label {
+        font-size: 15px;
+        font-weight: 500;
+      }
+
+      .tool-arrow {
+        display: flex;
+        align-items: center;
+      }
+
+      .tool-arrow svg {
+        width: 8px;
+        height: 14px;
+        stroke: var(--secondary-text);
+      }
+
+      .footer {
+        width: 100%;
+        padding: 20px 0px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .feedback-link {
+        color: var(--secondary-text);
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: underline;
+        transition: text-underline-offset 100ms ease-out;
+      }
+      .feedback-link:hover {
+        transition-duration: 100ms ease-out;
+        text-underline-offset: 2px;
+      }
+
+      .created-by {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .created-by-text {
+        font-size: 12px;
+        font-weight: 500;
+        color: black;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        text-decoration: none;
+      }
+
+      .brand-logo {
+        width: 32px;
+        height: 32px;
+        image-rendering: -webkit-optimize-contrast;
+        object-fit: contain;
+      }
+
+      .brand-name {
+        font-size: 24px;
+        color: var(--text-color);
+        font-weight: 600;
+        letter-spacing: -0.04em;
+        font-family: "Tobias", sans-serif;
+        text-decoration: none;
+      }
+
+      .tool-icon svg {
+        width: 20px;
+        height: 20px;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        fill: none;
+      }
+
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.3);
+        -webkit-backdrop-filter: blur(4px);
+        backdrop-filter: blur(4px);
+        z-index: 100;
+      }
+
+      .modal {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.95);
+        background: var(--bg-white);
+        border-radius: 12px;
+        padding: 4px;
+        min-width: 200px;
+        opacity: 0;
+        border: 0.5px solid white;
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 200ms ease, opacity 200ms ease;
+      }
+
+      .modal.active {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+
+      .modal-header {
+        padding: 8px 12px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--secondary-text);
+        border-bottom: 1px solid var(--border-light);
+      }
+
+      .model-options {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .model-option {
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        border-radius: 8px;
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1);
+        transition: background 150ms ease;
+
+      }
+
+      .model-option:hover {
+        background: rgba(0, 0, 0, 0.1);
+        transform: scale(0.99);
+      }
+
+      .model-option.selected {
+        box-shadow: inset 0 1px 4px rgba(156, 180, 0, 1);
+      }
+
+      .model-option-text {
+        font-size: 13px;
+        font-weight: 400;
+      }
+
+      .model-option-check {
+        width: 16px;
+        height: 16px;
+        display: none;
+        stroke: #69C57D;
+      }
+
+      .model-option.selected .model-option-check {
+        display: block;
+      }
+
+      .breadcrumb-support-nav-bar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 12px;
+        padding-right: 12px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid var(--secondary-text);
+      }
+
+      .breadcrumb-support-nav-bar-item {
+        font-size: 12px;
+        font-weight: 500;
+        font-family: "Eudoxussans", sans-serif;
+        color: var(--secondary-text);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        cursor: pointer;
+      }
+      
+      .breadcrumb-support-nav-bar-item-link {
+        text-decoration: none;
+        color: var(--secondary-text);
+      }
+
+      .sheet-actions-container {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding-top: 8px;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .form-row {
+        display: flex;
+        flex: 1;
+        flex-direction: row; 
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .insert-variables-row {
+        padding-right: 6px;
+      }
+
+      .form-inner-container {
+        display: flex;
+        flex: 1;
+        flex-direction: row;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .form-label {
+        color: var(--text-color);
+        font-size: 16px;
+        font-weight: 400;
+        text-wrap: nowrap;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+
+      .form-label.secondary {
+        color: var(--secondary-text);
+        font-size: 12px;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+
+      .number-input-container {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        min-width: 60px;
+        height: 18px;
+      }
+
+      .number-input {
+        width: 100%;
+        height: 100%;
+        padding: 4px 24px 4px 8px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-family: inherit;
+        color: var(--text-color);
+        background: none;
+        -webkit-appearance: none;
+        -moz-appearance: textfield;
+        appearance: textfield;
+        text-align: right; /* Add right alignment */
+      }
+
+      .number-input::-webkit-outer-spin-button,
+      .number-input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      .number-input:focus {
+        outline: none;
+      }
+
+      .spinner-controls {
+        position: absolute;
+        right: 0px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: 0px;
+        pointer-events: none;
+      }
+
+      .spinner-button {
+        width: 12px;
+        height: 10px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        color: var(--secondary-text);
+        cursor: pointer;
+        pointer-events: auto;
+        font-size: 8px;
+        line-height: 1;
+      }
+
+      .spinner-button:hover {
+        color: var(--text-color);
+      }
+
+      .select-input {
+        display: flex;
+        flex: 1;
+        padding: 6px 8px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-family: inherit;
+        min-width: 100px;
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 0px 4px 0px rgba(4, 0, 255, 0.25);
+        border: 0.5px solid white;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: var(--bg-white);
+        background-image: url('data:image/svg+xml;utf8,<svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L5 5.5L9 1.5" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+        background-repeat: no-repeat;
+        background-position: right 8px center;
+        padding-right: 20px;
+        cursor: pointer;
+        transition: all 200ms ease-in-out;
+      }
+
+      .select-input::-ms-expand {
+        display: none;
+      }
+
+      .select-input:hover {
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 0px 4px 0px rgba(4, 0, 255, 0.5);
+      }
+
+      .select-input:focus {
+        outline: none;
+        /* box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1), */
+                    /* 0px 0px 8px 0px rgba(4, 0, 255, 0.35); */
+      }
+
+      .select-input.small {
+        min-width: 60px;
+      }
+
+      .connector-text {
+        color: var(--secondary-text);
+        font-size: 14px;
+        font-weight: 400;
+        text-wrap: nowrap;
+      }
+
+      .info-button {
+        width: 16px;
+        height: 16px;
+        border: none;
+        background: none;
+        color: var(--secondary-text);
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .info-button svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      .floating-label-group {
+        position: relative;
+        flex: 1;
+      }
+
+      .floating-label {
+        position: absolute;
+        pointer-events: none;
+        left: 8px;
+        top: 8px;
+        transition: 0.2s ease all;
+        color: var(--secondary-text);
+        font-size: 14px;
+        background: var(--bg-white);
+        padding: 0 4px;
+        z-index: 2;
+      }
+
+
+      .input-container {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        border: 1px solid var(--border-light);
+        border-radius: 4px;
+        padding-right: 6px;
+        padding-bottom: 4px;
+        padding-top: 0px; /* Default padding-top is 0px */
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 0px 4px 0px rgba(4, 0, 255, 0.25);
+        transition: box-shadow 200ms ease-in-out, padding-top 200ms ease-in-out; /* Add transition for padding */
+      }
+
+      .input-container:hover {
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 0px 4px 0px rgba(4, 0, 255, 0.5);
+      }
+
+      .input-container:focus {
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 0px 4px 0px rgba(4, 0, 255, 0.50);
+      }
+
+      .prompt-input {
+        min-height: 120px !important;
+        height: 100%;
+        resize: vertical;
+      }
+      /* Update existing styles to remove duplicated properties */
+      .prompt-input, .system-input {
+        width: 100%;
+        min-height: 120px;
+        padding: 6px;
+        border: none; /* Remove border since it's on the container */
+        border-radius: 4px;
+        font-size: 14px;
+        resize: vertical;
+        font-family: inherit;
+        position: relative;
+        background: transparent;
+        z-index: 1;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+
+      .prompt-input::-webkit-scrollbar, .system-input::-webkit-scrollbar {
+        display: none;
+      }
+
+      .inline-suggestion {
+        position: absolute;
+        pointer-events: none;
+        color: var(--secondary-text);
+        background: transparent;
+        font-size: 14px;
+        font-family: inherit;
+        white-space: pre-wrap;
+        overflow: hidden;
+        z-index: 0;
+        opacity: 0.6;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 5px;
+        margin: 0;
+        line-height: inherit;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+
+      .inline-suggestion-hint {
+        position: absolute;
+        right: 12px;
+        bottom: 2px;
+        color: var(--secondary-text);
+        font-size: 12px;
+        background: var(--bg-white);
+        padding: 2px 4px;
+        border-radius: 4px;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+      }
+
+      .inline-suggestion-hint.visible {
+        opacity: 1;
+      }
+
+      .autocomplete-suggestions {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        max-height: 150px;
+        overflow-y: auto;
+        background: var(--bg-white);
+        border: 1px solid var(--border-light);
+        border-radius: 4px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        display: none;
+      }
+
+      .autocomplete-suggestion {
+        padding: 8px;
+        cursor: pointer;
+        border-bottom: 1px solid var(--border-light);
+      }
+
+      .autocomplete-suggestion:last-child {
+        border-bottom: none;
+      }
+
+      .autocomplete-suggestion:hover {
+        background: rgba(4, 0, 255, 0.05);
+      }
+
+      .autocomplete-suggestion.selected {
+        background: rgba(4, 0, 255, 0.1);
+      }
+
+      .system-input {
+        min-height: 60px;
+        height: 100%;
+        overflow-y: hidden;
+        resize: vertical;
+      }
+
+      .prompt-input:focus + .floating-label,
+      .prompt-input:not(:placeholder-shown) + .floating-label,
+      .system-input:focus + .floating-label,
+      .system-input:not(:placeholder-shown) + .floating-label {
+        top: -16px;
+        font-size: 12px;
+      }
+
+      .prompt-input:focus,
+      .system-input:focus {
+        outline: none;  /* Removes default focus outline */
+        /* If you want to replace it with your own focus style: */
+      }
+
+      .prompt-input::placeholder,
+      .system-input::placeholder {
+        color: transparent;
+      }
+
+      .textarea-info {
+        align-self: flex-end;
+      }
+
+      .toggle-container {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .toggle-button {
+        padding: 4px 12px;
+        border: 1px solid var(--border-color);
+        background: var(--bg-white);
+        border-radius: 100px;
+        font-size: 14px;
+
+        cursor: pointer;
+      }
+
+      .toggle-button.active {
+        background: var(--text-color);
+        color: var(--bg-white);
+      }
+
+      .all-rows-button {
+        padding: 4px 12px;
+        border: 1px solid var(--border-color);
+        background: var(--bg-white);
+        border-radius: 6px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      .run-button {
+        width: fit-content;
+        padding: 8px 16px;
+        background: var(--bg-white);
+        border: 0.5px solid #ffffff;
+        border-radius: 100px;
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                   0px 2px 4px 0px rgba(255, 255, 255, 0.5),
+                   0px 2px 4px 0px rgba(255, 255, 255, 0.5),
+                   0px 1px 3px 0px rgba(255, 255, 255, 0.7),
+                   0px 0px 12px 0px rgba(255, 255, 255, 0.9),
+                   0px 8px 12px 0px rgba(253, 242, 133, 0.7),
+                   0px 6px 10px 0px rgba(156, 180, 0, 0.5),
+                   0px 7px 11px 0px rgba(252, 237, 81, 0.6);
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 1.25;
+        font-family: "Eudoxussans", sans-serif;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin: 16px auto 0;
+        transition: all 200ms ease-out;
+      }
+
+      .run-button:hover {
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 4px 8px 0px rgba(255, 255, 255, 0.5),
+                    0px 3px 6px 0px rgba(255, 255, 255, 0.7),
+                    0px 1px 2px 0px rgba(255, 255, 255, 0.9),
+                    0px 0px 24px 0px rgba(255, 255, 255, 0.8),
+                    0px 12px 24px 0px rgba(253, 242, 133, 0.7),
+                    0px 10px 20px 0px rgba(252, 237, 81, 0.6),
+                    0px 8px 16px 0px rgba(156, 180, 0, 0.5);
+        transition-duration: 375ms;
+      }
+
+      .run-button:active {
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 1px 4px 0px rgba(156, 180, 0, 1) inset,
+                    0px 3px 6px 0px rgba(255, 255, 255, 0.7),
+                    0px 2px 4px 0px rgba(255, 255, 255, 0.8),
+                    0px 0.5px 1px 0px rgba(255, 255, 255, 1),
+                    0px 0px 12px 0px rgba(255, 255, 255, 1),
+                    0px 8px 16px 0px rgba(252, 237, 81, 1),
+                    0px 6px 12px 0px rgba(176, 165, 57, 1),
+                    0px 4px 8px 0px rgba(126, 119, 41, 1);
+        transform: scale(0.99);
+        transition-duration: 100ms;
+      }
+
+      .run-button:active .button-icons {
+        /* transform: scale(1.01); */
+      }
+
+      .button-icons {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .tip-text {
+        color: var(--secondary-text);
+        font-size: 12px;
+        text-align: center;
+        line-height: 1.5;
+        margin-top: 16px;
+      }
+
+      .start-row-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .rows-container {
+        margin-top: 8px;
+      }
+
+      .select-input.select-input-column {
+        width: fit-content;
+        cursor: pointer;
+        min-width: unset;
+        flex: 0;
+      }
+
+      .run-button.active {
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 1px 4px 0px rgba(156, 180, 0, 1) inset,
+                    0px 3px 6px 0px rgba(255, 255, 255, 0.7),
+                    0px 2px 4px 0px rgba(255, 255, 255, 0.8),
+                    0px 0.5px 1px 0px rgba(255, 255, 255, 1),
+                    0px 0px 12px 0px rgba(255, 255, 255, 1),
+                    0px 8px 16px 0px rgba(252, 237, 81, 1),
+                    0px 6px 12px 0px rgba(176, 165, 57, 1),
+                    0px 4px 8px 0px rgba(126, 119, 41, 1);
+        transform: scale(0.99);
+        transition-duration: 300ms;
+      }
+
+      .column-name-row-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 6px;
+        gap: 6px;
+        background: var(--bg-white);
+        border-radius: 12px;
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 0px 4px 0px rgba(4, 0, 255, 0.25);
+        border: 0.5px solid white;
+        transition: all 300ms ease-in-out; /* Add transition to base state */
+      }
+
+      .column-name-row-container:hover {
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 0px 4px 0px rgba(4, 0, 255, 0.5);
+      }
+
+      .column-name-row-container:has(.number-input:focus) {
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 0px 4px 0px rgba(4, 0, 255, 0.5);
+      }
+
+      .column-name-row-container:focus {
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 0px 4px 0px rgba(4, 0, 255, 0.5);
+      }
+
+      .column-name-row-input {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        padding: 6px 8px;
+        justify-content: space-between;
+        gap: 8px;
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1);
+        border-radius: 8px;
+        transition: all 400ms ease-in-out;
+      }
+     
+      .column-name-row-input:hover {
+        box-shadow: inset 0 1px 4px rgba(156, 180, 0, 1);
+        transform: scale(0.99);
+      }
+
+      .column-name-row-input:has(.number-input:focus) {
+        box-shadow: inset 0 1px 4px rgba(156, 180, 0, 1);
+        transform: scale(0.99);
+      }
+
+      .column-name-row-input:focus {
+        box-shadow: inset 0 1px 4px rgba(156, 180, 0, 1);
+      }
+
+      .column-name-row-input:has(.action-panel-button) {
+        flex: 0;
+      }
+
+      .input-group {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .number-spinner {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .spinner-controls {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .spinner-button {
+        padding: 0;
+        background: none;
+        border: none;
+        font-size: 8px;
+        color: var(--secondary-text);
+        cursor: pointer;
+        line-height: 1;
+      }
+
+      .spinner-button:hover {
+        color: var(--text-color);
+      }
+
+
+      .info-button svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      .info-button:hover {
+        color: var(--text-color);
+      }
+
+      .prompt-input:focus ~ .input-container,
+      .system-input:focus ~ .input-container,
+      .input-container:has(.prompt-input:focus),
+      .input-container:has(.system-input:focus),
+      .prompt-input:not(:placeholder-shown) ~ .input-container,
+      .system-input:not(:placeholder-shown) ~ .input-container,
+      .input-container:has(.prompt-input:not(:placeholder-shown)),
+      .input-container:has(.system-input:not(:placeholder-shown)) {
+        padding-top: 6px;
+      }
+
+      .info-button svg,
+      .tool-icon svg,
+      .tool-arrow svg,
+      .info-button .textarea-info svg{
+        transform: translateZ(0);
+        backface-visibility: hidden;
+        -webkit-font-smoothing: antialiased;
+        will-change: transform;
+      }
+
+      .input-container:has(:focus),
+      .input-container :focus ~ .input-container {
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 0px 4px 0px rgba(4, 0, 255, 0.50);
+      }
+
+      .action-panel-button{
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-family: "Eudoxussans", sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 1.25;
+        flex: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <svg style="display: none;">
+        <symbol id="arrow-right" viewBox="0 0 8 14">
+          <g clip-path="url(#clip0_967_6423)">
+            <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <defs>
+            <clipPath id="clip0_967_6423">
+              <rect width="8" height="14" fill="white"/>
+            </clipPath>
+          </defs>
+        </symbol>
+      </svg>
+      <div class="nav-bar">
+        <div class="menu-icon">
+          <img
+            src="https://cdn.prod.website-files.com/6729490eec7b4529805b89b0/672971cc952da991c5eaddb4_android-chrome-512x512.png"
+            alt="Sun Locke Logo"
+            width="20"
+            height="20"
+          />
+        </div>
+        <div class="nav-title">Home</div>
+      </div>
+      <div class="model-selectors">
+        <div class="model-group">
+          <div class="model-label">Language</div>
+          <div class="model-selector">
+            <div class="model-button" data-model-type="language">gpt 4o-mini</div>
+          </div>
+        </div>
+
+        <div class="model-group">
+          <div class="model-label">Search</div>
+          <div class="model-selector">
+            <div class="model-button" data-model-type="search">small</div>
+          </div>
+        </div>
+
+        <div class="model-group">
+          <div class="model-label">Image</div>
+          <div class="model-selector">
+            <div class="model-button" data-model-type="image">FLUX.1 [dev]</div>
+          </div>
+        </div>
+      </div>
+      <div class="main-content">
+          
+        <div class="action-buttons">
+          <button class="action-button active" data-tools="new-run">
+            <span class="tool-icon">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_967_6388)">
+                  <path d="M1 7H7M13 7H7M7 7V1M7 7V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </g>
+                <defs>
+                  <clipPath id="clip0_967_6388">
+                    <rect width="14" height="14" fill="currentColor"/>
+                  </clipPath>
+                </defs>
+              </svg>
+            </span>
+            <span>New Run</span>
+          </button>
+          <button class="action-button" data-tools="history">
+            <span class="tool-icon">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_967_6393)">
+                  <path d="M12.7675 7.87508C12.3453 10.6817 9.92362 12.8334 6.99935 12.8334C3.77769 12.8334 1.16602 10.2217 1.16602 7.00008C1.16602 3.77842 3.77769 1.16675 6.99935 1.16675C9.39139 1.16675 11.4471 2.60653 12.3473 4.66675" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M9.91602 4.66667H12.2327C12.5641 4.66667 12.8327 4.39804 12.8327 4.06667V1.75" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                </g>
+                <defs>
+                  <clipPath id="clip0_967_6393">
+                    <rect width="14" height="14" fill="currentColor"/>
+                  </clipPath>
+                </defs>
+              </svg>
+            </span>
+            <span>History</span>
+          </button>
+          <button class="action-button" data-tools="help">
+            <span class="tool-icon">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style="padding: 1px;">
+                <path d="M6 5.66675V9.0001" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M6 3.00667L6.00667 2.99926" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M6.00065 11.6666C9.68255 11.6666 12.6673 8.68183 12.6673 4.99992C12.6673 1.31802 9.68255 -1.66675 6.00065 -1.66675C2.31875 -1.66675 -0.66602 1.31802 -0.66602 4.99992C-0.66602 8.68183 2.31875 11.6666 6.00065 11.6666Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span>Help</span>
+          </button>
+        </div>
+
+        <!-- New Run Tools List -->
+        <div class="tools-list" data-tools="new-run">
+          <div class="custom-prompt-section">
+            <button class="tool-item">
+              <div class="tool-content">
+                <span class="tool-icon">
+                  <svg
+                    width="14"
+                    height="18"
+                    viewBox="0 0 14 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M7.83268 7.33333V1.5L1.16602 10.6667H6.16602V16.5L12.8327 7.33333L7.83268 7.33333Z"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+                <span class="tool-label">Custom prompt</span>
+              </div>
+              <span class="tool-arrow">
+                <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </button>
+          </div>
+
+          <div class="tools-section">
+            <button class="tool-item">
+              <div class="tool-content">
+                <span class="tool-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="m5 8 6 6" />
+                    <path d="m4 14 6-6 3-3" />
+                    <path d="M2 5h12" />
+                    <path d="M7 2h1" />
+                    <path d="m22 22-5-10-5 10" />
+                    <path d="M14 18h6" />
+                  </svg>
+                </span>
+                <span class="tool-label">Translate</span>
+              </div>
+              <span class="tool-arrow">
+                <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </button>
+
+            <button class="tool-item">
+              <div class="tool-content">
+                <span class="tool-icon">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <rect
+                      width="5.83333"
+                      height="4.16667"
+                      rx="0.6"
+                      transform="matrix(0 -1 -1 0 18.334 17.5)"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                    />
+                    <rect
+                      width="5.83333"
+                      height="4.16667"
+                      rx="0.6"
+                      transform="matrix(0 -1 -1 0 5.83398 12.9167)"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                    />
+                    <rect
+                      width="5.83333"
+                      height="4.16667"
+                      rx="0.6"
+                      transform="matrix(0 -1 -1 0 18.334 8.33325)"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                    />
+                    <path
+                      d="M14.166 14.5833H11.5827C10.4781 14.5833 9.58268 13.6878 9.58268 12.5833V7.41659C9.58268 6.31202 10.4781 5.41659 11.5827 5.41659H14.166"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                    />
+                    <path
+                      d="M9.58398 10H5.83398"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                    />
+                  </svg>
+                </span>
+                <span class="tool-label">Classify/Categorize</span>
+              </div>
+              <span class="tool-arrow">
+                <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </button>
+
+            <button class="tool-item">
+              <div class="tool-content">
+                <span class="tool-icon">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M17.084 17.0833L18.334 18.3333"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M12.5 15C12.5 16.3807 13.6193 17.5 15 17.5C15.6916 17.5 16.3175 17.2192 16.7701 16.7654C17.2211 16.3132 17.5 15.6892 17.5 15C17.5 13.6193 16.3807 12.5 15 12.5C13.6193 12.5 12.5 13.6193 12.5 15Z"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M16.6673 10.0001V4.83194C16.6673 4.67281 16.6041 4.5202 16.4916 4.40768L13.9264 1.84248C13.8139 1.72996 13.6613 1.66675 13.5021 1.66675H3.93399C3.60261 1.66675 3.33398 1.93538 3.33398 2.26675V17.7334C3.33398 18.0648 3.60261 18.3334 3.93398 18.3334H9.16732"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M13.334 1.66675V4.40008C13.334 4.73145 13.6026 5.00008 13.934 5.00008H16.6673"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+                <span class="tool-label">Extract</span>
+              </div>
+              <span class="tool-arrow">
+                <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </button>
+
+            <button class="tool-item">
+              <div class="tool-content">
+                <span class="tool-icon">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M2.5 17.5L10.8333 9.16667M15 5L12.9167 7.08333"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M7.91667 1.66675L8.70443 3.79565L10.8333 4.58341L8.70443 5.37118L7.91667 7.50008L7.1289 5.37118L5 4.58341L7.1289 3.79565L7.91667 1.66675Z"
+                      stroke="currentColor"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M15.8327 8.33325L16.2828 9.54977L17.4993 9.99992L16.2828 10.4501L15.8327 11.6666L15.3825 10.4501L14.166 9.99992L15.3825 9.54977L15.8327 8.33325Z"
+                      stroke="currentColor"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+                <span class="tool-label">Reformat</span>
+              </div>
+              <span class="tool-arrow">
+                <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </button>
+
+            <button class="tool-item">
+              <div class="tool-content">
+                <span class="tool-icon">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M1.66602 10.0001C1.66602 14.6025 5.39698 18.3334 9.99935 18.3334C14.6017 18.3334 18.3327 14.6025 18.3327 10.0001C18.3327 5.39771 14.6017 1.66675 9.99935 1.66675C5.39698 1.66675 1.66602 5.39771 1.66602 10.0001Z"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M10.834 1.70776C10.834 1.70776 13.334 4.99995 13.334 9.99995C13.334 15 10.834 18.2921 10.834 18.2921"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M9.16601 18.2921C9.16601 18.2921 6.66602 15 6.66602 9.99995C6.66602 4.99995 9.16602 1.70776 9.16602 1.70776"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M2.19141 12.9167H17.8087"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M2.19141 7.08325H17.8087"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+                <span class="tool-label">Search the web</span>
+              </div>
+              <span class="tool-arrow">
+                <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </button>
+
+            <button class="tool-item">
+              <div class="tool-content">
+                <span class="tool-icon">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M17.5 6.43334V16.9C17.5 17.2314 17.2314 17.5 16.9 17.5H6.43333C6.10196 17.5 5.83333 17.2314 5.83333 16.9V6.43333C5.83333 6.10196 6.10196 5.83333 6.43334 5.83333H16.9C17.2314 5.83333 17.5 6.10196 17.5 6.43334Z"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M15 3.33333H3.93333C3.60196 3.33333 3.33333 3.60196 3.33333 3.93333V15"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M5.83398 14L10.371 12.5L17.5007 15"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M13.75 10.8333C13.0596 10.8333 12.5 10.2736 12.5 9.58325C12.5 8.8929 13.0596 8.33325 13.75 8.33325C14.4404 8.33325 15 8.8929 15 9.58325C15 10.2736 14.4404 10.8333 13.75 10.8333Z"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+                <span class="tool-label">Prompt image</span>
+              </div>
+              <span class="tool-arrow">
+                <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <!-- History Tools List -->
+        <div class="tools-list" data-tools="history" style="display: none;">
+          <div class="history-section">
+            <button class="tool-item">
+              <div class="tool-content">
+                <span class="tool-icon">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 5V10L13.75 11.875" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M1.66602 10.0001C1.66602 14.6025 5.39698 18.3334 9.99935 18.3334C14.6017 18.3334 18.3327 14.6025 18.3327 10.0001C18.3327 5.39771 14.6017 1.66675 9.99935 1.66675C7.39935 1.66675 5.05768 2.86675 3.49935 4.75008" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M1.66602 3.33325V4.99992C1.66602 5.46016 2.03911 5.83325 2.49935 5.83325H4.16602" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span class="tool-label">Recent Runs</span>
+              </div>
+              <span class="tool-arrow">
+                <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </button>
+
+            <button class="tool-item">
+              <div class="tool-content">
+                <span class="tool-icon">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6.66667 5H17.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M6.66667 10H17.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M6.66667 15H17.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2.5 5H2.50833" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2.5 10H2.50833" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2.5 15H2.50833" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span class="tool-label">All History</span>
+              </div>
+              <span class="tool-arrow">
+                <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Help Tools List -->
+        <div class="tools-list" data-tools="help" style="display: none;">
+          <div class="help-section">
+            <button class="tool-item">
+              <div class="tool-content">
+                <span class="tool-icon">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.5 8.33325C7.5 6.49159 10 6.49159 10 8.33325C10 9.58325 8.75 9.33325 8.75 10.8333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M8.75 12.9167L8.76 12.9067" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9.99935 18.3334C14.6017 18.3334 18.3327 14.6025 18.3327 10.0001C18.3327 5.39771 14.6017 1.66675 9.99935 1.66675C5.39698 1.66675 1.66602 5.39771 1.66602 10.0001C1.66602 11.1501 1.88268 12.2501 2.29935 13.2501L1.66602 17.5001L5.91602 16.8667C6.91602 17.2834 7.99935 17.5001 9.99935 18.3334Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span class="tool-label">Documentation</span>
+              </div>
+              <span class="tool-arrow">
+                <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </button>
+
+            <button class="tool-item">
+              <div class="tool-content">
+                <span class="tool-icon">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.8327 15.8333H5.83268C4.72811 15.8333 3.83268 14.9379 3.83268 13.8333V6.16667C3.83268 5.06209 4.72811 4.16667 5.83268 4.16667H10.8327M10.8327 15.8333L15.8327 10.8333M10.8327 15.8333L15.8327 20.8333M15.8327 10.8333L10.8327 5.83333M15.8327 10.8333L10.8327 15.8333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span class="tool-label">Quick Tutorial</span>
+              </div>
+              <span class="tool-arrow">
+                <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </button>
+
+            <button class="tool-item">
+              <div class="tool-content">
+                <span class="tool-icon">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.8327 4.16675H5.83268C4.72811 4.16675 3.83268 5.06218 3.83268 6.16675V13.8334C3.83268 14.938 4.72811 15.8334 5.83268 15.8334H14.1661C15.2707 15.8334 16.1661 14.938 16.1661 13.8334V9.16675" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M15.4167 2.91675C15.8769 3.37705 15.8769 4.12295 15.4167 4.58325L10.4167 9.58325H8.33333V7.49992L13.3333 2.49992C13.7936 2.03962 14.5395 2.03962 14.9998 2.49992L15.4167 2.91675Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span class="tool-label">Send Feedback</span>
+              </div>
+              <span class="tool-arrow">
+                <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <div class="footer" style="height: 100%; justify-content: space-between;">
+          <div class="feedback-container">
+            <a href="#" class="feedback-link">Feedback</a>
+          </div>
+          <div class="brand-container">
+            <a href="https://www.sunlocke.com" class="brand">
+              <img
+                src="https://cdn.prod.website-files.com/6729490eec7b4529805b89b0/672971cc952da991c5eaddb4_android-chrome-512x512.png"
+                alt="Sun Locke Logo"
+                class="brand-logo"
+              />
+              <div class="brand-name">Sun Locke</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container custom-prompt-page" style="display: none;">
+      <div class="nav-bar">
+        <div class="menu-icon">
+          <svg 
+            width="20" 
+            height="20" 
+            viewBox="0 0 20 20" 
+            fill="none" 
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g clip-path="url(#clip0_1007_3539)">
+              <path 
+                d="M19 9.64H1M1 9.64L9.64 1M1 9.64L9.64 18.28" 
+                stroke="black" 
+                stroke-width="1.5" 
+                stroke-linecap="round" 
+                stroke-linejoin="round"
+              />
+            </g>
+            <defs>
+              <clipPath id="clip0_1007_3539">
+                <rect width="20" height="19.28" fill="white"/>
+              </clipPath>
+            </defs>
+          </svg>
+        </div>
+        <div class="nav-title">Custom Prompt</div>
+      </div>
+      <div class="model-selectors" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+          <div class="model-group">
+              <div class="model-label">Language</div>
+            <div class="model-selector">
+              <div class="model-button" data-model-type="language">gpt 4o-mini</div>
+            </div>
+          </div>
+        </div>
+        <div class="breadcrumb-support-nav-bar">
+          <div class="breadcrumb-support-nav-bar-item" href="#">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="1" y="0.780029" width="12" height="12" rx="6" stroke="#717F96" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M7 3.78003L7 6.78003L10 6.78003" stroke="#717F96" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <a class="breadcrumb-support-nav-bar-item-link">History</a>
+          </div>
+          <div class="breadcrumb-support-nav-bar-item">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4.25 4.25C4.25 2.5 7 2.5 7 4.25C7 5.5 5.75 5.25 5.75 6.75" stroke="#717F96" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M5.75 8.75L5.76 8.74" stroke="#717F96" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M6 11C8.76142 11 11 8.76142 11 6C11 3.23858 8.76142 1 6 1C3.23858 1 1 3.23858 1 6C1 6.89 1.23 7.72 1.65 8.43L1.23 10.77L3.57 10.35C4.28 10.77 5.11 11 6 11Z" stroke="#717F96" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <a href="#" class="breadcrumb-support-nav-bar-item-link">Help</a>
+          </div>
+      </div>
+        <div class="main-content">
+          <div class="sheet-actions-container">
+              <div class="column-name-row-container">
+                <div class="input-group">
+                    <div class="column-name-row-input">
+                      <label class="form-label">Column name row:</label>
+                      <div class="number-input-container">
+                        <input 
+                          type="text" 
+                          inputmode="numeric" 
+                          pattern="[0-9]*"
+                          class="number-input" 
+                          value="1" 
+                          aria-label="Number input"
+                        >
+                        <div class="spinner-controls">
+                          <button class="spinner-button up" aria-label="Increase value"><svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.5L5 1.5L9 5.5" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                          <button class="spinner-button down" aria-label="Decrease value"><svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L5 5.5L9 1.5" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                        </div>
+                      </div>
+                    </div>
+                  <button class="info-button" aria-label="More information">
+                    <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <g clip-path="url(#clip0_1065_8670)">
+                        <path d="M8 7.94678V11.2801" stroke="#717F96" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M8 5.2867L8.00667 5.27929" stroke="#717F96" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M8.00065 14.9466C11.6825 14.9466 14.6673 11.9618 14.6673 8.27995C14.6673 4.59805 11.6825 1.61328 8.00065 1.61328C4.31875 1.61328 1.33398 4.59805 1.33398 8.27995C1.33398 11.9618 4.31875 14.9466 8.00065 14.9466Z" stroke="#717F96" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </g>
+                      <defs>
+                        <clipPath id="clip0_1065_8670">
+                          <rect width="16" height="16" fill="white" transform="translate(0 0.280029)"/>
+                        </clipPath>
+                      </defs>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="form-group">
+                  <label class="form-label">Prompt to run for:</label>
+                  <div class="form-row">
+                      <div class="form-inner-container">
+                        <select class="select-input" aria-label="Select sheet" title="Select sheet">
+                            <option>Sheet</option>
+                        </select>
+                        <span class="connector-text">and</span>
+                        <select class="select-input" aria-label="Select column" title="Select column">
+                            <option>Column</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row insert-variables-row">
+                    <div class="form-inner-container">
+                      <label class="connector-text">Insert variables:</label>
+                      <select class="select-input select-input-column" aria-label="Select variable type" title="Select variable type">
+                          <option>Active</option>
+                      </select>
+                      <span class="connector-text">or</span>
+                      <select class="select-input select-input-column" aria-label="Select column letter" title="Select column letter">
+                          <option>A</option>
+                      </select>
+                    </div>
+                    <button class="info-button" title="Help">
+                      <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_1065_8670)">
+                          <path d="M8 7.94678V11.2801" stroke="#717F96" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                          <path d="M8 5.2867L8.00667 5.27929" stroke="#717F96" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                          <path d="M8.00065 14.9466C11.6825 14.9466 14.6673 11.9618 14.6673 8.27995C14.6673 4.59805 11.6825 1.61328 8.00065 1.61328C4.31875 1.61328 1.33398 4.59805 1.33398 8.27995C1.33398 11.9618 4.31875 14.9466 8.00065 14.9466Z" stroke="#717F96" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </g>
+                        <defs>
+                          <clipPath id="clip0_1065_8670">
+                            <rect width="16" height="16" fill="white" transform="translate(0 0.280029)"/>
+                          </clipPath>
+                        </defs>
+                      </svg>
+                    </button>
+                  </div>
+                  <div class="input-container"> <!-- New wrapper div -->
+                    <div class="floating-label-group">
+                      <textarea 
+                        class="prompt-input" 
+                        placeholder="Type your prompt here, for example:&#10;Write an SEO optimized description&#10;for this product: {{product}}&#10;Include these attributes:&#10;Size: {{size}}, color: {{color}}"
+                        autocomplete="on"
+                        data-autocomplete="true"></textarea>
+                      <span class="floating-label">Type your prompt here</span>
+                      <div class="autocomplete-suggestions"></div>
+                    </div>
+                    <button class="info-button textarea-info" title="Help">
+                      <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_1065_8670)">
+                          <path d="M8 7.94678V11.2801" stroke="#717F96" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                          <path d="M8 5.2867L8.00667 5.27929" stroke="#717F96" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                          <path d="M8.00065 14.9466C11.6825 14.9466 14.6673 11.9618 14.6673 8.27995C14.6673 4.59805 11.6825 1.61328 8.00065 1.61328C4.31875 1.61328 1.33398 4.59805 1.33398 8.27995C1.33398 11.9618 4.31875 14.9466 8.00065 14.9466Z" stroke="#717F96" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </g>
+                        <defs>
+                          <clipPath id="clip0_1065_8670">
+                            <rect width="16" height="16" fill="white" transform="translate(0 0.280029)"/>
+                          </clipPath>
+                        </defs>
+                      </svg>
+                    </button>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="form-label">Put results in:</label>
+                  <div class="form-row">
+                      <div class="form-inner-container">
+                        <select class="select-input" aria-label="Select output sheet" title="Select output sheet">
+                            <option>Sheet</option>
+                        </select>
+                        <span class="connector-text">and</span>
+                        <select class="select-input" aria-label="Select output column" title="Select output column">
+                            <option>Column</option>
+                        </select>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <label class="form-label">Spreadsheet settings</label>
+                        <div class="input-container">
+                          <div class="floating-label-group">
+                          <textarea 
+                              class="system-input" 
+                              placeholder="System instructions"
+                              autocomplete="on"
+                              data-autocomplete="true"></textarea>
+                          <span class="floating-label">System Instructions</span>
+                          <div class="autocomplete-suggestions"></div>
+                          </div>
+                          <button class="info-button textarea-info" title="Help">
+                          <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <g clip-path="url(#clip0_1065_8670)">
+                              <path d="M8 7.94678V11.2801" stroke="#717F96" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M8 5.2867L8.00667 5.27929" stroke="#717F96" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M8.00065 14.9466C11.6825 14.9466 14.6673 11.9618 14.6673 8.27995C14.6673 4.59805 11.6825 1.61328 8.00065 1.61328C4.31875 1.61328 1.33398 4.59805 1.33398 8.27995C1.33398 11.9618 4.31875 14.9466 8.00065 14.9466Z" stroke="#717F96" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                              </g>
+                              <defs>
+                              <clipPath id="clip0_1065_8670">
+                                  <rect width="16" height="16" fill="white" transform="translate(0 0.280029)"/>
+                              </clipPath>
+                              </defs>
+                          </svg>
+                          </button>
+                        </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="start-row-container">
+                        <div class="toggle-container">
+                            <label class="form-label">Start from row:</label>
+                            <button class="toggle-button active">Auto</button>
+                            <button class="toggle-button">Fixed</button>
+                            <div class="number-input-container">
+                                <input type="number" value="1" min="1" class="number-input" aria-label="Fixed start row number" title="Fixed start row number">
+                                <div class="number-controls">
+                                    <button class="number-control up" aria-label="Increase start row">▲</button>
+                                    <button class="number-control down" aria-label="Decrease start row">▼</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column-name-row-container">
+                            <div class="column-name-row-input">
+                                <label class="form-label">Rows</label>
+                                <div class="input-group">
+                                    <div class="number-input-container">
+                                        <input type="number" value="3" min="1" class="number-input" aria-label="Number of rows to process" title="Number of rows to process">
+                                        <div class="spinner-controls">
+                                            <button class="spinner-button up" aria-label="Increase value"><svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.5L5 1.5L9 5.5" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                                            <button class="spinner-button down" aria-label="Decrease value"><svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L5 5.5L9 1.5" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                                          </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column-name-row-input">
+                              <button class="action-panel-button form-label">All rows</button>
+                            </div>
+                            <button class="info-button" title="Help">
+                                <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <g clip-path="url(#clip0_1065_8670)">
+                                        <path d="M8 7.94678V11.2801" stroke="#717F96" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M8 5.2867L8.00667 5.27929" stroke="#717F96" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M8.00065 14.9466C11.6825 14.9466 14.6673 11.9618 14.6673 8.27995C14.6673 4.59805 11.6825 1.61328 8.00065 1.61328C4.31875 1.61328 1.33398 4.59805 1.33398 8.27995C1.33398 11.9618 4.31875 14.9466 8.00065 14.9466Z" stroke="#717F96" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </g>
+                                    <defs>
+                                        <clipPath id="clip0_1065_8670">
+                                            <rect width="16" height="16" fill="white" transform="translate(0 0.280029)"/>
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                  <button class="run-button">
+                      <span>Run 3 rows</span>
+                      <div class="button-icons">
+                          <span class="info-button">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M9 6.28003V18.28" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M15 6.28003V18.28" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M9 6.28003C9 4.62317 7.65685 3.28003 6 3.28003C4.34315 3.28003 3 4.62317 3 6.28003C3 7.93688 4.34315 9.28003 6 9.28003H18C19.6569 9.28003 21 7.93688 21 6.28003C21 4.62317 19.6569 3.28003 18 3.28003C16.3431 3.28003 15 4.62317 15 6.28003" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M9 18.28C9 19.9369 7.65685 21.28 6 21.28C4.34315 21.28 3 19.9369 3 18.28C3 16.6232 4.34315 15.28 6 15.28H18C19.6569 15.28 21 16.6232 21 18.28C21 19.9369 19.6569 21.28 18 21.28C16.3431 21.28 15 19.9369 15 18.28" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                          </span>
+                          <span class="return-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M10.25 19.53L6.75 16.03L10.25 12.53" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M6.75 16.03H12.75C14.9591 16.03 16.75 14.2392 16.75 12.03V5.03003" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                          </span>
+                      </div>
+                  </button>
+
+                  <div class="tip-text">
+                      Tip: Try 1-3 rows before running many rows!<br>
+                      We will not overwrite existing data.<br>
+                      Empty rows will be skipped.
+                  </div>
+              </div>
+          </div>
+
+          <div class="footer" style="height: 100%; justify-content: space-between;">
+            <div class="feedback-container">
+              <a href="#" class="feedback-link">Feedback</a>
+            </div>
+            <div class="brand-container">
+              <a href="https://www.sunlocke.com" class="brand">
+                <img
+                  src="https://cdn.prod.website-files.com/6729490eec7b4529805b89b0/672971cc952da991c5eaddb4_android-chrome-512x512.png"
+                  alt="Sun Locke Logo"
+                  class="brand-logo"
+                />
+                <div class="brand-name">Sun Locke</div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay">
+      <div class="modal">
+        <div class="modal-header">Select Model</div>
+        <div class="model-options">
+          <!-- Options will be populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <script>
+    const MODEL_OPTIONS = {
+      language: [
+        "gpt 4o-mini",
+        "gpt 4o",
+        "DeepSeek-V3",
+        "gpt o1-mini",
+        "gpt o1",
+      ],
+      search: [
+        "small",
+        "medium",
+        "large"
+      ],
+      image: [
+        "FLUX.1 [dev]",
+        "FLUX.2 [dev]",
+        "FLUX.3 [dev]"
+      ]
+    };
+
+    let activeModelType = null;
+    const overlay = document.querySelector('.modal-overlay');
+    const modal = document.querySelector('.modal');
+    const modelSelectors = document.querySelectorAll('.model-selector');
+    const modelOptionsContainer = document.querySelector('.model-options');
+    const customPromptButton = document.querySelector('.custom-prompt-section .tool-item');
+    const mainPage = document.querySelector('.container:not(.custom-prompt-page)');
+    const customPromptPage = document.querySelector('.custom-prompt-page');
+
+    function showModal(modelType, currentValue) {
+      console.log(`Opening model selection modal for ${modelType} type with current value: ${currentValue}`);
+      activeModelType = modelType;
+      const header = modal.querySelector('.modal-header');
+      header.textContent = `Select ${modelType.charAt(0).toUpperCase() + modelType.slice(1)} Model`;
+      
+      // Clear existing options
+      modelOptionsContainer.innerHTML = '';
+      
+      // Add new options
+      MODEL_OPTIONS[modelType].forEach(option => {
+        const div = document.createElement('div');
+        div.className = `model-option ${option === currentValue ? 'selected' : ''}`;
+        div.innerHTML = `
+          <span class="model-option-text">${option}</span>
+          <svg class="model-option-check" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        `;
+        div.addEventListener('click', () => {
+          console.log(`Selected model option: ${option}`);
+          selectModel(option);
+        });
+        modelOptionsContainer.appendChild(div);
+      });
+      
+      overlay.style.display = 'block';
+      requestAnimationFrame(() => {
+        modal.classList.add('active');
+      });
+    }
+
+    function hideModal() {
+      console.log('Closing model selection modal');
+      modal.classList.remove('active');
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        activeModelType = null;
+      }, 200);
+    }
+
+    function selectModel(value) {
+      console.log(`Updating all ${activeModelType} model buttons to value: ${value}`);
+      // Update all buttons with the same model type
+      const buttons = document.querySelectorAll(`[data-model-type="${activeModelType}"]`);
+      buttons.forEach(button => {
+        button.textContent = value;
+      });
+      hideModal();
+    }
+
+    // Event Listeners
+    modelSelectors.forEach(selector => {
+      selector.addEventListener('click', () => {
+        const modelButton = selector.querySelector('.model-button');
+        const modelType = modelButton.dataset.modelType;
+        console.log(`Model selector clicked: ${modelType} (current value: ${modelButton.textContent})`);
+        showModal(modelType, modelButton.textContent);
+      });
+    });
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        console.log('Modal overlay clicked - closing modal');
+        hideModal();
+      }
+    });
+
+    // Close on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        console.log('Escape key pressed - closing modal');
+        hideModal();
+      }
+
+      // Handle Command+Return shortcut
+      if ((e.metaKey || e.ctrlKey) && (e.key === 'Enter' || e.key === 'Return')) {
+        console.log('Command+Return shortcut detected - triggering run button');
+        e.preventDefault();
+        const runButton = document.querySelector('.run-button');
+        if (runButton) {
+          runButton.click();
+          
+          // Quick hover fade in
+          runButton.style.transitionDuration = '100ms';
+          runButton.style.boxShadow = `inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 4px 8px 0px rgba(255, 255, 255, 0.5),
+                    0px 3px 6px 0px rgba(255, 255, 255, 0.7),
+                    0px 1px 2px 0px rgba(255, 255, 255, 0.9),
+                    0px 0px 24px 0px rgba(255, 255, 255, 0.8),
+                    0px 12px 24px 0px rgba(253, 242, 133, 0.7),
+                    0px 10px 20px 0px rgba(252, 237, 81, 0.6),
+                    0px 8px 16px 0px rgba(156, 180, 0, 0.5)`;
+
+          // Press down - active state
+          setTimeout(() => {
+            runButton.style.transitionDuration = '50ms';
+            runButton.style.transform = 'scale(0.99)';
+            runButton.style.boxShadow = `inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 1px 4px 0px rgba(156, 180, 0, 1) inset,
+                    0px 3px 6px 0px rgba(255, 255, 255, 0.7),
+                    0px 2px 4px 0px rgba(255, 255, 255, 0.8),
+                    0px 0.5px 1px 0px rgba(255, 255, 255, 1),
+                    0px 0px 12px 0px rgba(255, 255, 255, 1),
+                    0px 8px 16px 0px rgba(252, 237, 81, 1),
+                    0px 6px 12px 0px rgba(176, 165, 57, 1),
+                    0px 4px 8px 0px rgba(126, 119, 41, 1)`;
+          }, 100);
+
+          // Release press - back to hover
+          setTimeout(() => {
+            runButton.style.transitionDuration = '50ms';
+            runButton.style.transform = '';
+            runButton.style.boxShadow = `inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 4px 8px 0px rgba(255, 255, 255, 0.5),
+                    0px 3px 6px 0px rgba(255, 255, 255, 0.7),
+                    0px 1px 2px 0px rgba(255, 255, 255, 0.9),
+                    0px 0px 24px 0px rgba(255, 255, 255, 0.8),
+                    0px 12px 24px 0px rgba(253, 242, 133, 0.7),
+                    0px 10px 20px 0px rgba(252, 237, 81, 0.6),
+                    0px 8px 16px 0px rgba(156, 180, 0, 0.5)`;
+          }, 250);
+
+          // Remove hover
+          setTimeout(() => {
+            runButton.style.transitionDuration = '300ms';
+            runButton.style.boxShadow = '';
+          }, 300);
+        }
+      }
+    });
+
+    // Add navigation between pages
+    customPromptButton?.addEventListener('click', () => {
+      console.log('Custom prompt button clicked - navigating to custom prompt page');
+      mainPage.style.display = 'none';
+      customPromptPage.style.display = 'flex';
+    });
+
+    document.querySelectorAll('.menu-icon').forEach(icon => {
+      icon.addEventListener('click', () => {
+        console.log('Menu icon clicked - returning to main page');
+        mainPage.style.display = 'flex';
+        customPromptPage.style.display = 'none';
+      });
+    });
+
+    // Add click logging for other interactive elements
+    document.querySelector('.feedback-link')?.addEventListener('click', (e) => {
+      console.log('Feedback link clicked');
+    });
+
+    document.querySelector('.brand')?.addEventListener('click', (e) => {
+      console.log('Brand logo/link clicked - navigating to Sun Locke website');
+    });
+
+    // Add tools list switching logic
+    const actionButtons = document.querySelectorAll('.action-button');
+    const toolsLists = document.querySelectorAll('.tools-list');
+
+    function switchTools(toolsType) {
+      // Update button states
+      actionButtons.forEach(button => {
+        if (button.dataset.tools === toolsType) {
+          button.classList.add('active');
+        } else {
+          button.classList.remove('active');
+        }
+      });
+
+      // Update tools list visibility
+      toolsLists.forEach(list => {
+        if (list.dataset.tools === toolsType) {
+          list.style.display = 'flex';
+        } else {
+          list.style.display = 'none';
+        }
+      });
+    }
+
+    actionButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const toolsType = button.dataset.tools;
+        switchTools(toolsType);
+      });
+    });
+
+    // Initialize with new-run tools visible
+    switchTools('new-run');
+
+    // Global constants and suggestions
+    const VARIABLE_REGEX = /\{\{(\w*)$/;
+    const COMMAND_REGEX = /^\/(\w*)$/;
+    const DEBOUNCE_MS = 50; // Reduced from 150ms to 50ms for better responsiveness
+
+    // Enhanced suggestions with categories and weights
+    const suggestions = {
+      variables: ['product', 'size', 'color', 'price', 'description', 'category'].map(v => ({
+        text: v,
+        type: 'variable',
+        weight: 1
+      })),
+      prompts: [
+        // Add command suggestions with "/" prefix
+        '/translate',
+        '/classify',
+        '/extract',
+        '/reformat',
+        '/search',
+        // Regular prompts
+        'Write an SEO optimized description for',
+        'Translate the following text to',
+        'Classify this content into categories',
+        'Extract key information from',
+        'Reformat this content to be more readable',
+        'Generate a product description for',
+        'Summarize the following text',
+        'Create a marketing copy for',
+        'Write a compelling title for',
+        'Generate keywords for',
+        'Create a bullet point list of features for',
+        'Write a professional email about',
+        'Create a social media post about',
+        'Generate meta description for SEO',
+        'Write a blog post introduction about',
+        'Draft an engaging newsletter summary for',
+        'Translate the following into',
+        'Classify these rows of data by',
+        'Extract the most common issues from',
+        'Reformat this text to be',
+        'Generate a product pitch for',
+        'Summarize the feedback from',
+        'Create a marketing tagline for',
+        'Write a compelling headline for',
+        'Generate relevant hashtags for',
+        'Create a bullet point list of best features for',
+        'Write a professional email regarding',
+        'Create a social media caption about',
+        'Generate an SEO-focused meta description for',
+        'Write an introduction for a blog post about',
+        'Draft a concise memo summarizing',
+        'Translate this announcement from',
+        'Classify these items based on',
+        'Extract key details from',
+        'Reformat this paragraph into',
+        'Generate a product description for',
+        'Summarize the user feedback from',
+        'Create a marketing copy for',
+        'Write a compelling title for',
+        'Generate keywords for',
+        'Create a bullet point list of steps for',
+        'Write a professional email outlining',
+        'Create a social media post about',
+        'Generate a meta description for',
+        'Write a blog post introduction about',
+        'Draft a short LinkedIn summary about',
+        'Translate this policy into',
+        'Classify these responses by',
+        'Extract key figures from',
+        'Reformat this timeline into',
+        'Generate a product pitch for',
+        'Summarize the top findings from',
+        'Create a marketing copy for',
+        'Write a compelling title for',
+        'Generate keywords for',
+        'Create a bullet point list of benefits for',
+        'Write a professional email offering',
+        'Create a social media post about',
+        'Generate a meta description for',
+        'Write a blog post introduction about',
+        'Draft a short note summarizing',
+        'Translate this agenda into',
+        'Classify these transactions into',
+        'Extract phone numbers and emails from',
+        'Reformat this PDF excerpt into',
+        'Generate a product description for',
+        'Summarize the key points from',
+        'Create a marketing copy for',
+        'Write a compelling title for',
+        'Generate keywords for',
+        'Create a bullet point list of must-learn features for',
+        'Write a professional email introducing',
+        'Create a social media post featuring',
+        'Generate a meta description for',
+        'Write a blog post introduction about',
+        'Draft an elevator pitch for',
+        'Translate this proposal into',
+        'Classify these items by',
+        'Extract only the numeric data from',
+        'Reformat this text into',
+        'Generate a product description for',
+        'Summarize the conversation logs from',
+        'Create a marketing copy for',
+        'Write a compelling headline for',
+        'Generate relevant keywords for',
+        'Create a bullet point list of features for',
+        'Write a professional email explaining',
+        'Create a social media post about',
+        'Generate a meta description for',
+        'Write a blog post introduction about',
+        'Draft a concise summary for',
+        'Translate this manual into',
+        'Classify these worksheets by',
+        'Extract relevant performance metrics from',
+        'Reformat this transcript into',
+        'Generate a product description for',
+        'Summarize the main points from',
+        'Create a marketing copy for',
+        'Write a compelling title for',
+        'Generate relevant hashtags for',
+        // Translation prompts
+        'Translate the following text to',
+        'Translate this paragraph from',
+        'Translate these instructions into',
+        'Translate the following content to',
+        'Translate this message from',
+        'Translate these notes into',
+        'Translate the next sentence to',
+        'Translate the entire excerpt from',
+        'Translate this announcement into',
+        'Translate the following summary to',
+        'Translate these guidelines from',
+        'Translate the next section into',
+        'Translate this passage to',
+        'Translate the following memo from',
+        'Translate this statement into',
+        'Translate these bullet points to',
+        'Translate the next paragraph from',
+        'Translate this interview transcript into',
+        'Translate the following abstract to',
+        'Translate these lines from',
+        'Translate this report into',
+        'Translate the following proposal to',
+        'Translate these terms and conditions from',
+        'Translate the next chapter into',
+        'Translate this policy to',
+        'Translate the following caption from',
+        'Translate these survey questions into',
+        'Translate the next instruction to',
+        'Translate this product description from',
+        'Translate the following excerpt into',
+        'Translate these meeting notes to',
+        'Translate the next passage from',
+        'Translate this disclaimer into',
+        'Translate the following review to',
+        'Translate these highlights from',
+        'Translate the next statement into',
+        'Translate this inquiry to',
+        'Translate the following feedback from',
+        'Translate these guidelines into',
+        'Translate the next clause to',
+        'Translate this specification from',
+        'Translate the following invitation into',
+        'Translate these headings to',
+        'Translate the next bullet point from',
+        'Translate this user manual into',
+        'Translate the following sentence to',
+        'Translate these comments from',
+        'Translate the next remark into',
+        'Translate this Q&A section to',
+        'Translate the following query from',
+        'Translate these instructions into',
+        'Translate the next testimonial to',
+        'Translate this promotional text from',
+        'Translate the following call-to-action into',
+        'Translate these paragraphs to',
+        'Translate the next snippet from',
+        'Translate this service description into',
+        'Translate the following agreement to',
+        'Translate these directions from',
+        'Translate the next summary into',
+        'Translate this script to',
+        'Translate the following reference from',
+        'Translate these tips into',
+        'Translate the next disclaimer to',
+        'Translate this FAQ from',
+        'Translate the following block of text into',
+        'Translate these bullet points to',
+        'Translate the next set of instructions from',
+        'Translate this agenda into',
+        'Translate the following announcement to',
+        'Translate these transcripts from',
+        'Translate the next policy into',
+        'Translate this brand message to',
+        'Translate the following suggestions from',
+        'Translate these product specs into',
+        'Translate the next line of text to',
+        'Translate this item description from',
+        'Translate the following dialogue into',
+        'Translate these best practices to',
+        'Translate the next excerpt from',
+        'Translate this short paragraph into',
+        'Translate the following guidelines to',
+        'Translate these job requirements from',
+        'Translate the next request into',
+        'Translate this privacy statement to',
+        'Translate the following bullet list from',
+        'Translate these daily notes into',
+        'Translate the next phrase to',
+        'Translate this status update from',
+        'Translate the following explanation into',
+        'Translate these release notes to',
+        'Translate the next comment from',
+        'Translate this feedback request into',
+        'Translate the following abstract to',
+        'Translate these disclaimers from',
+        'Translate the next script into',
+        'Translate this info packet to',
+        'Translate the following summary from',
+        'Translate these bullet points into',
+        'Translate the next set of guidelines to',
+        // Classification prompts
+        'Classify these items into',
+        'Classify the following data by',
+        'Classify this text based on',
+        'Classify these entries into',
+        'Classify the following rows by',
+        'Classify this content into',
+        'Classify these responses based on',
+        'Classify these items by',
+        'Classify the following notes into',
+        'Classify this set of remarks by',
+        'Classify these messages into',
+        'Classify the following lines of text by',
+        'Classify this segment of text into',
+        'Classify these reviews based on',
+        'Classify the following survey responses into',
+        'Classify this collection of feedback by',
+        'Classify these inventory entries into',
+        'Classify these data points by',
+        'Classify these descriptions into',
+        'Classify the following lines by',
+        'Classify this list of phrases into',
+        'Classify these user inputs by',
+        'Classify the following categories based on',
+        'Classify these tickets into',
+        'Classify this sequence of words by',
+        'Classify these article excerpts into',
+        'Classify the following statements by',
+        'Classify these tags based on',
+        'Classify these documents into',
+        'Classify the following product details by',
+        'Classify this set of questions into',
+        'Classify these records based on',
+        'Classify the following cases into',
+        'Classify these definitions by',
+        'Classify these code snippets into',
+        'Classify the following user queries by',
+        'Classify these short texts based on',
+        'Classify these lines of dialogue into',
+        'Classify the following remarks by',
+        'Classify these sessions into',
+        'Classify this list of attributes by',
+        'Classify these references based on',
+        'Classify the following updates into',
+        'Classify these notes by',
+        'Classify these issues into',
+        'Classify this group of statements based on',
+        'Classify these titles into',
+        'Classify the following quotes by',
+        'Classify these email subjects into',
+        'Classify these topics based on',
+        'Classify the following items by',
+        'Classify these logs into',
+        'Classify this set of entries by',
+        'Classify these columns based on',
+        'Classify the following submissions into',
+        'Classify these rows by',
+        'Classify this list of options into',
+        'Classify the following sets based on',
+        'Classify these user concerns into',
+        'Classify these paragraphs by',
+        'Classify this block of text into',
+        'Classify the following lines of code by',
+        'Classify these folders based on',
+        'Classify this data segment into',
+        'Classify these references by',
+        'Classify these extracts into',
+        'Classify the following warnings based on',
+        'Classify these comments into',
+        'Classify this bunch of lines by',
+        'Classify these categories based on',
+        'Classify the following tasks into',
+        'Classify these sentences by',
+        'Classify this summary into',
+        'Classify these bullet points based on',
+        'Classify these elements into',
+        'Classify the following bullet list by',
+        'Classify these topics into',
+        'Classify this set of rows by',
+        'Classify these chapters into',
+        'Classify the following instructions based on',
+        'Classify these remarks by',
+        'Classify these database entries into',
+        'Classify the following text blocks by',
+        'Classify these fields based on',
+        'Classify this group of results into',
+        'Classify these inputs by',
+        'Classify the following resources into',
+        'Classify this collection of terms by',
+        'Classify these data rows into',
+        'Classify these record entries by',
+        'Classify the following question set into',
+        'Classify these lines of feedback by',
+        'Classify these facts into',
+        'Classify the following statements based on',
+        'Classify these disclaimers by',
+        'Classify this set of attributes into',
+        'Classify these metrics based on',
+        'Classify the following articles into',
+        'Classify these segments by',
+        'Classify this final list of items into',
+        // Categorization prompts
+        'Categorize the following data by',
+        'Categorize these items by',
+        'Categorize this text by',
+        'Categorize the provided content by',
+        'Categorize these records by',
+        'Categorize the following entries by',
+        'Categorize these details by',
+        'Categorize the following list by',
+        'Categorize these lines by',
+        'Categorize the following rows by',
+        'Categorize these elements by',
+        'Categorize the following information by',
+        'Categorize this set of data by',
+        'Categorize these segments by',
+        'Categorize the following content by',
+        'Categorize these attributes by',
+        'Categorize the text below by',
+        'Categorize this collection by',
+        'Categorize these rows of text by',
+        'Categorize the data points by',
+        'Categorize this subset by',
+        'Categorize the entries below by',
+        'Categorize these materials by',
+        'Categorize the following segments by',
+        'Categorize this series of items by',
+        'Categorize these elements from',
+        'Categorize the following rows from',
+        'Categorize these lines from',
+        'Categorize the text provided by',
+        'Categorize this set of records by',
+        'Categorize these columns by',
+        'Categorize the following categories by',
+        'Categorize these data samples by',
+        'Categorize this content based on',
+        'Categorize these details based on',
+        'Categorize the following list based on',
+        'Categorize these elements based on',
+        'Categorize the data below based on',
+        'Categorize this text based on',
+        'Categorize these entries based on',
+        'Categorize the following information based on',
+        'Categorize these materials based on',
+        'Categorize this content for',
+        'Categorize these items for',
+        'Categorize the following text for',
+        'Categorize these details for',
+        'Categorize the data here for',
+        'Categorize these elements for',
+        'Categorize the rows below for',
+        'Categorize this set of items for',
+        'Categorize these lines for',
+        'Categorize the following dataset for',
+        'Categorize these attributes for',
+        'Categorize this text for',
+        'Categorize the data points for',
+        'Categorize these records for',
+        'Categorize the following entries for',
+        'Categorize these materials for',
+        'Categorize this series for',
+        'Categorize these elements from this',
+        'Categorize the rows from this',
+        'Categorize the following data from this',
+        'Categorize these lines from this',
+        'Categorize the details from this',
+        'Categorize this content from the',
+        'Categorize the entries from the',
+        'Categorize these items from the',
+        'Categorize the following records from the',
+        'Categorize this list from the',
+        'Categorize these rows from the',
+        'Categorize the text from the',
+        'Categorize the data from the',
+        'Categorize this dataset from the',
+        'Categorize these attributes from the',
+        'Categorize these details from the',
+        'Categorize the information from the',
+        'Categorize this series from the',
+        'Categorize the following items into',
+        'Categorize these rows into',
+        'Categorize this data into',
+        'Categorize the content into',
+        'Categorize these entries into',
+        'Categorize the details into',
+        'Categorize these elements into',
+        'Categorize the rows below into',
+        'Categorize these records into',
+        'Categorize the following material into',
+        'Categorize these items into',
+        'Categorize the text provided into',
+        'Categorize these attributes into',
+        'Categorize the following dataset into',
+        'Categorize these lines into',
+        'Categorize this collection into',
+        'Categorize the information into',
+        'Categorize the data points into',
+        'Categorize these segments into',
+        'Categorize the following text into',
+        'Categorize these materials into',
+        // Combined Classification and Categorization prompts
+        'Classify and categorize the following data by',
+        'Classify and categorize these entries based on',
+        'Classify and categorize this text by',
+        'Classify and categorize the content below',
+        'Classify and categorize these items into',
+        'Classify and categorize these categories for',
+        'Classify and categorize these records by',
+        'Classify and categorize these details into',
+        'Classify and categorize the following text by',
+        'Classify and categorize these inputs based on',
+        'Classify and categorize these observations by',
+        'Classify and categorize these lines of data into',
+        'Classify and categorize this content for',
+        'Classify and categorize these user responses by',
+        'Classify and categorize these files into',
+        'Classify and categorize the following entries by',
+        'Classify and categorize these notes by',
+        'Classify and categorize the text below into',
+        'Classify and categorize the following statements by',
+        'Classify and categorize these segments for',
+        'Classify and categorize this set of information by',
+        'Classify and categorize these items for',
+        'Classify and categorize the data in this list by',
+        'Classify and categorize these responses for',
+        'Classify and categorize the following lines into',
+        'Classify and categorize this collection by',
+        'Classify and categorize these data points for',
+        'Classify and categorize the following items based on',
+        'Classify and categorize these results by',
+        'Classify and categorize these records into',
+        'Classify and categorize the content in this text for',
+        'Classify and categorize this table by',
+        'Classify and categorize the items in this set into',
+        'Classify and categorize these columns of data by',
+        'Classify and categorize these descriptions based on',
+        'Classify and categorize these notes into',
+        'Classify and categorize the following survey entries by',
+        'Classify and categorize these lines of text for',
+        'Classify and categorize these data segments into',
+        'Classify and categorize these categories by',
+        'Classify and categorize these references based on',
+        'Classify and categorize this material for',
+        'Classify and categorize these analytics results by',
+        'Classify and categorize these report findings into',
+        'Classify and categorize these bullet points by',
+        'Classify and categorize the following items for',
+        'Classify and categorize these statements into',
+        'Classify and categorize this dataset based on',
+        'Classify and categorize the following list by',
+        'Classify and categorize these rows of information for',
+        'Classify and categorize this content into',
+        'Classify and categorize these paragraphs by',
+        'Classify and categorize these text entries based on',
+        'Classify and categorize the following references into',
+        'Classify and categorize these sections of data by',
+        'Classify and categorize these user comments for',
+        'Classify and categorize this information by',
+        'Classify and categorize these bullet points into',
+        'Classify and categorize these segments by',
+        'Classify and categorize the following metrics based on',
+        'Classify and categorize these file names for',
+        'Classify and categorize the content in this document by',
+        'Classify and categorize these data fields into',
+        'Classify and categorize these labels by',
+        'Classify and categorize these quotes for',
+        'Classify and categorize these product listings based on',
+        'Classify and categorize this set of entries into',
+        'Classify and categorize these rows by',
+        'Classify and categorize these questions for',
+        'Classify and categorize the following results into',
+        'Classify and categorize these tags based on',
+        'Classify and categorize these text snippets by',
+        'Classify and categorize the following lines for',
+        'Classify and categorize these categories into',
+        'Classify and categorize the content in this snippet by',
+        'Classify and categorize these phrases based on',
+        'Classify and categorize these sections for',
+        'Classify and categorize this text segment by',
+        'Classify and categorize these elements into',
+        'Classify and categorize the following arguments by',
+        'Classify and categorize these data rows based on',
+        'Classify and categorize these topics for',
+        'Classify and categorize the following records into',
+        'Classify and categorize these clusters by',
+        'Classify and categorize these data extracts based on',
+        'Classify and categorize these groups into',
+        'Classify and categorize the content within this text by',
+        'Classify and categorize these entries for',
+        'Classify and categorize these variables into',
+        'Classify and categorize these listed items by',
+        'Classify and categorize the following attributes based on',
+        'Classify and categorize these analytics points for',
+        'Classify and categorize these enumerated items into',
+        'Classify and categorize this compilation by',
+        'Classify and categorize these lines of information for',
+        'Classify and categorize these paragraphs into',
+        'Classify and categorize this selection based on',
+        'Classify and categorize these survey answers by',
+        'Classify and categorize the following dataset into',
+        'Classify and categorize these notes for',
+        'Classify and categorize these text entries into',
+        'Classify and categorize these references by',
+        'Classify and categorize this set of descriptions based on',
+        // Extraction prompts
+        'Extract key information from',
+        'Extract the main points from',
+        'Extract relevant data from',
+        'Extract essential details from',
+        'Extract critical insights from',
+        'Extract important notes from',
+        'Extract all references from',
+        'Extract crucial elements from',
+        'Extract significant highlights from',
+        'Extract the core facts from',
+        'Extract user mentions from',
+        'Extract vital clues from',
+        'Extract relevant tags from',
+        'Extract central ideas from',
+        'Extract key figures from',
+        'Extract all citations from',
+        'Extract critical statistics from',
+        'Extract noteworthy points from',
+        'Extract essential keywords from',
+        'Extract relevant quotes from',
+        'Extract vital metrics from',
+        'Extract crucial facts from',
+        'Extract the major themes from',
+        'Extract main categories from',
+        'Extract critical fields from',
+        'Extract relevant placeholders from',
+        'Extract noteworthy references from',
+        'Extract essential parameters from',
+        'Extract the baseline data from',
+        'Extract crucial remarks from',
+        'Extract focal points from',
+        'Extract relevant variables from',
+        'Extract key ideas from',
+        'Extract the underlying concepts from',
+        'Extract prominent issues from',
+        'Extract important fields from',
+        'Extract relevant columns from',
+        'Extract detailed statistics from',
+        'Extract major conclusions from',
+        'Extract core components from',
+        'Extract the main attributes from',
+        'Extract essential metrics from',
+        'Extract critical descriptors from',
+        'Extract significant tags from',
+        'Extract vital references from',
+        'Extract top priorities from',
+        'Extract relevant headings from',
+        'Extract all subtopics from',
+        'Extract key bullet points from',
+        'Extract essential placeholders from',
+        'Extract the fundamental notes from',
+        'Extract relevant attachments from',
+        'Extract important disclaimers from',
+        'Extract major highlights from',
+        'Extract the concluding statements from',
+        'Extract the summary points from',
+        'Extract relevant bullet points from',
+        'Extract essential guidelines from',
+        'Extract critical warnings from',
+        'Extract vital instructions from',
+        'Extract important placeholders from',
+        'Extract the listed references from',
+        'Extract relevant disclaimers from',
+        'Extract core messages from',
+        'Extract major bullet points from',
+        'Extract essential headings from',
+        'Extract the underlying patterns from',
+        'Extract crucial categories from',
+        'Extract relevant items from',
+        'Extract primary objectives from',
+        'Extract vital constraints from',
+        'Extract key constraints from',
+        'Extract the main references from',
+        'Extract critical placeholders from',
+        'Extract essential examples from',
+        'Extract significant categories from',
+        'Extract the overview points from',
+        'Extract relevant user feedback from',
+        'Extract key disclaimers from',
+        'Extract main highlights from',
+        'Extract crucial text elements from',
+        'Extract essential statements from',
+        'Extract relevant supporting details from',
+        'Extract major references from',
+        'Extract vital bullet points from',
+        'Extract important headers from',
+        'Extract the significant patterns from',
+        'Extract relevant data points from',
+        'Extract the essential parameters from',
+        'Extract critical themes from',
+        'Extract all user inputs from',
+        'Extract the major disclaimers from',
+        'Extract relevant sections from',
+        'Extract key results from',
+        'Extract essential instructions from',
+        'Extract crucial bullet points from',
+        'Extract important references from',
+        'Extract the core metadata from',
+        'Extract the final notes from',
+        'Extract major takeaways from',
+        'Extract vital disclaimers from',
+        'Extract the principal aspects from',
+        'Extract fundamental info from',
+        // Reformatting prompts
+        'Reformat this content to',
+        'Reformat this data for',
+        'Reformat these notes into',
+        'Reformat the following text into',
+        'Reformat this paragraph to',
+        'Reformat these notes for',
+        'Reformat the layout of',
+        'Reformat this snippet to',
+        'Reformat this structure for',
+        'Reformat the format of',
+        'Reformat the style of',
+        'Reformat this text into',
+        'Reformat these sections for',
+        'Reformat the headings of',
+        'Reformat these items into',
+        'Reformat this draft to',
+        'Reformat this outline for',
+        'Reformat the organization of',
+        'Reformat these sentences into',
+        'Reformat this entire document to',
+        'Reformat the spacing of',
+        'Reformat this script for',
+        'Reformat the layout of',
+        'Reformat these references into',
+        'Reformat this code snippet to',
+        'Reformat these instructions for',
+        'Reformat the overall structure of',
+        'Reformat this log file into',
+        'Reformat these transcripts for',
+        'Reformat this content block into',
+        'Reformat the design of',
+        'Reformat these images to',
+        'Reformat the table of',
+        'Reformat this dataset for',
+        'Reformat the alignment of',
+        'Reformat these paragraphs into',
+        'Reformat this checklist for',
+        'Reformat the style guide of',
+        'Reformat these bullet points to',
+        'Reformat the textual elements of',
+        'Reformat these metadata fields into',
+        'Reformat this summary for',
+        'Reformat the headings and subheadings of',
+        'Reformat these policy documents into',
+        'Reformat this table to',
+        'Reformat the data distribution of',
+        'Reformat these pages for',
+        'Reformat this short excerpt into',
+        'Reformat the entire structure of',
+        'Reformat these cells to',
+        'Reformat the bullet points of',
+        'Reformat this draft for',
+        'Reformat these entries into',
+        'Reformat these columns for',
+        'Reformat the arrangement of',
+        'Reformat this block quote into',
+        'Reformat the structure for',
+        'Reformat these headings to',
+        'Reformat the font styles of',
+        'Reformat this entire piece for',
+        'Reformat these notes for',
+        'Reformat the text blocks of',
+        'Reformat this paragraph for',
+        'Reformat the entire layout for',
+        'Reformat these lines into',
+        'Reformat the bullet listing for',
+        'Reformat these sections into',
+        'Reformat this design draft for',
+        'Reformat the structural layout of',
+        'Reformat these bullet points into',
+        'Reformat the entire doc for',
+        'Reformat these references for',
+        'Reformat this draft outline into',
+        'Reformat the text flow of',
+        'Reformat these modules for',
+        'Reformat the selected portion of',
+        'Reformat these examples into',
+        'Reformat the entire article for',
+        'Reformat this research note into',
+        'Reformat these bullet entries for',
+        'Reformat the main sections of',
+        'Reformat these lines for',
+        'Reformat the headings to',
+        'Reformat these topics into',
+        'Reformat the structure to',
+        'Reformat this entire text for',
+        'Reformat these columns into',
+        'Reformat the layout into',
+        'Reformat these sections to',
+        'Reformat this entire page into',
+        'Reformat the formatting of',
+        'Reformat these instructions to',
+        'Reformat the listing of',
+        'Reformat this text block for',
+        'Reformat these bullet points for',
+        'Reformat the headings for',
+        'Reformat these lines to',
+        'Reformat the entire layout to',
+        'Reformat these references to',
+        'Reformat this file for',
+        // Web Search prompts
+        'Search the web for',
+        'Search the web about',
+        'Search the web to find',
+        'Search the web to gather',
+        'Search the web to see',
+        'Search the web to discover',
+        'Search the web to explore',
+        'Search the web regarding',
+        'Search the web to investigate',
+        'Search the web to review',
+        'Search the web for more on',
+        'Search the web about this',
+        'Search the web to locate',
+        'Search the web to confirm',
+        'Search the web for updates on',
+        'Search the web about the latest on',
+        'Search the web for information on',
+        'Search the web to learn about',
+        'Search the web to identify',
+        'Search the web to verify',
+        'Search the web about news on',
+        'Search the web for details on',
+        'Search the web to examine',
+        'Search the web to understand',
+        'Search the web to check',
+        'Search the web regarding the status of',
+        'Search the web to gather insights on',
+        'Search the web to see if there are resources for',
+        'Search the web to see references for',
+        'Search the web to investigate further on',
+        'Search the web about',
+        'Search the web for additional info on',
+        'Search the web to verify facts on',
+        'Search the web to look into',
+        'Search the web for context on',
+        'Search the web regarding the background of',
+        'Search the web to see sources for',
+        'Search the web to see if there are guidelines for',
+        'Search the web to gather data on',
+        'Search the web to learn more about',
+        'Search the web to confirm details about',
+        'Search the web for potential solutions to',
+        'Search the web about existing references for',
+        'Search the web to find resources about',
+        'Search the web to evaluate',
+        'Search the web to see examples of',
+        'Search the web for official info on',
+        'Search the web about any updates for',
+        'Search the web to ensure accuracy on',
+        'Search the web regarding best practices for',
+        'Search the web to see if there are regulations on',
+        'Search the web for any documentation on',
+        'Search the web about tips for',
+        'Search the web to see if there are instructions for',
+        'Search the web to compare details about',
+        'Search the web for',
+        'Search the web about',
+        'Search the web to see if anything new is posted about',
+        'Search the web to look for references to',
+        'Search the web regarding relevant info on',
+        'Search the web to see if official statements are out for',
+        'Search the web to gather any announcements on',
+        'Search the web to read more about',
+        'Search the web to see reviews on',
+        'Search the web about potential issues with',
+        'Search the web to confirm the validity of',
+        'Search the web to locate official sources for',
+        'Search the web for possible explanations of',
+        'Search the web to check for events related to',
+        'Search the web about background research for',
+        'Search the web to see if data is available on',
+        'Search the web for any analyses on',
+        'Search the web to check the credibility of',
+        'Search the web to see existing case studies for',
+        'Search the web regarding user experiences with',
+        'Search the web to investigate any problems with',
+        'Search the web for insights into',
+        'Search the web about potential solutions for',
+        'Search the web to compare multiple perspectives on',
+        'Search the web for',
+        'Search the web about',
+        'Search the web to see if there is any mention of',
+        'Search the web to see if there are instructions on',
+        'Search the web for guidelines on',
+        'Search the web regarding how to handle',
+        'Search the web to explore methods for',
+        'Search the web to find references to',
+        'Search the web about possible approaches to',
+        'Search the web to check existing theories on',
+        'Search the web to confirm any new developments for',
+        'Search the web to see if updates are available for',
+        'Search the web to identify known issues for',
+        'Search the web to learn about best practices for',
+        'Search the web to discover potential improvements for',
+        'Search the web to gather steps on',
+        'Search the web about the process of',
+        'Search the web to clarify the background of',
+        'Search the web to review any official releases on',
+        'Search the web to see if experts recommend anything for',
+        'Search the web for user feedback on',
+        'Search the web to verify new releases about',
+        'Search the web regarding any expansions for',
+        'Search the web to find further explanations for',
+        'Search the web to see the history of',
+        // Prompt image prompts
+        'What does this image depict',
+        'Describe the overall mood of',
+        'Identify the main subject in',
+        'Explain the composition elements of',
+        'List the primary colors used in',
+        'What is the focal point in',
+        'How would you interpret the setting of',
+        'Describe the lighting technique in',
+        'Which objects are visible in',
+        'Explain the perspective used in',
+        'What kind of style is shown in',
+        'Describe the emotion conveyed by',
+        'What is the possible backstory for',
+        'How would you summarize the theme of',
+        'Identify the key features in',
+        'Explain the depth of field used in',
+        'Describe the textures observed in',
+        'Which techniques seem most prominent in',
+        'What stands out most in',
+        'How does color affect the mood of',
+        'What type of environment is depicted in',
+        'Describe the contrast between elements in',
+        'What is the subject\'s pose in',
+        'Identify any patterns or repetition in',
+        'Explain the shading and highlights in',
+        'What feeling does the viewer get from',
+        'Describe the composition balance of',
+        'Which visual cues draw attention in',
+        'Explain the significance of the objects in',
+        'Describe the style or genre shown in',
+        'Which part of the image is most detailed in',
+        'How would you classify the atmosphere of',
+        'What story might be inferred from',
+        'Describe the background elements in',
+        'Which shapes or forms are most dominant in',
+        'Explain the use of negative space in',
+        'What does the lighting suggest about',
+        'Describe the sense of scale presented in',
+        'Which artistic approach seems evident in',
+        'How do the colors interact in',
+        'Which elements create depth in',
+        'Explain the motion or movement suggested by',
+        'What is the central theme of',
+        'Describe the arrangement of subjects in',
+        'Which details are easiest to overlook in',
+        'How might you title or caption',
+        'Describe any symbolic elements in',
+        'What kind of texture is implied by',
+        'How does the framing guide the eye in',
+        'Describe the perspective (bird\'s-eye, worm\'s-eye, etc.) of',
+        'What objects appear in the foreground of',
+        'Explain the balance of light and shadow in',
+        'Which elements contribute to the style of',
+        'Describe the subject\'s expression in',
+        'What can be inferred about the setting in',
+        'How does this image convey a message in',
+        'Explain the color palette used in',
+        'Which contrasting elements are visible in',
+        'Describe the overall layout of',
+        'What might be the intention behind',
+        'Explain how the details interact in',
+        'Which historical period or context is hinted at in',
+        'Describe any foreground to background transitions in',
+        'What do the proportions suggest in',
+        'Explain the lines or contours present in',
+        'How does perspective affect the interpretation of',
+        'Which elements create harmony in',
+        'Describe the atmosphere (e.g., tense, calm) in',
+        'What emotions might the viewer experience from',
+        'How is symmetry or asymmetry used in',
+        'Explain the lighting direction in',
+        'Which patterns repeat throughout',
+        'Describe the shape or silhouette in',
+        'How does the composition divide the space in',
+        'What creative techniques are emphasized in',
+        'Explain any focal contrast in',
+        'Which areas seem the brightest in',
+        'Describe the objects in the midground of',
+        'What can be assumed about the story behind',
+        'Explain the realism or abstraction in',
+        'Which elements feel most dramatic in',
+        'Describe the vantage point used in',
+        'How does the subject interact with the background in',
+        'What might the artist be trying to communicate in',
+        'Explain the color saturation levels in',
+        'Which objects appear blurred or out of focus in',
+        'Describe the use of highlights in',
+        'How might the viewer\'s eye travel across',
+        'What details define the style of',
+        'Explain the importance of the negative space in',
+        'Which details suggest movement or action in',
+        'Describe any distortions or unique perspectives in',
+        'How do the elements align or misalign in',
+        'What type of composition is evident in',
+        'Explain any emotional cues from the setting in',
+        'Which artistic influences are noticeable in',
+        'Describe the interplay of lines and curves in',
+        'How is balance achieved between the elements of',
+        'What stands out upon first glance at',
+        'Explain the sense of depth or layering in',
+        'Which objects or figures are partially hidden in',
+        'Describe the overall feeling or tone of',
+        // Image Creation prompts
+        'Create an image for',
+        'Create an image about',
+        'Create an image from',
+        'Create an image with',
+        'Create an image to',
+        'Create an image referencing',
+        'Create an image illustrating',
+        'Create an image depicting',
+        'Create an image highlighting',
+        'Create an image that shows',
+        'Create an image representing',
+        'Create an image to visualize',
+        'Create an image capturing',
+        'Create an image showcasing',
+        'Create an image focusing on',
+        'Create an image that conveys',
+        'Create an image outlining',
+        'Create an image emphasizing',
+        'Create an image featuring',
+        'Create an image exploring',
+        'Create an image describing',
+        'Create an image referencing the',
+        'Create an image bridging',
+        'Create an image derived from',
+        'Create an image in the style of',
+        'Create an image conveying the idea of',
+        'Create an image summarizing',
+        'Create an image about the',
+        'Create an image that merges',
+        'Create an image centering on',
+        'Create an image explaining',
+        'Create an image to illustrate',
+        'Create an image that blends',
+        'Create an image linking',
+        'Create an image echoing',
+        'Create an image aligning',
+        'Create an image connecting',
+        'Create an image expressing',
+        'Create an image pointing out',
+        'Create an image revealing',
+        'Create an image introducing',
+        'Create an image portraying',
+        'Create an image reimagining',
+        'Create an image combining',
+        'Create an image showing',
+        'Create an image illuminating',
+        'Create an image symbolizing',
+        'Create an image visualizing',
+        'Create an image blending',
+        'Create an image mixing',
+        'Create an image capturing the essence of',
+        'Create an image focusing on the',
+        'Create an image that reflects',
+        'Create an image that highlights',
+        'Create an image referencing the concept of',
+        'Create an image bridging the gap',
+        'Create an image reinterpreting',
+        'Create an image that distills',
+        'Create an image encompassing',
+        'Create an image that rethinks',
+        'Create an image that resonates',
+        'Create an image aligning ideas of',
+        'Create an image exploring the',
+        'Create an image enumerating',
+        'Create an image that elaborates',
+        'Create an image clarifying',
+        'Create an image that dramatizes',
+        'Create an image that transforms',
+        'Create an image that interprets',
+        'Create an image merging perspectives on',
+        'Create an image for the',
+        'Create an image describing the',
+        'Create an image about this',
+        'Create an image reflecting the',
+        'Create an image focusing on the theme of',
+        'Create an image capturing the theme of',
+        'Create an image illustrating the',
+        'Create an image bringing together',
+        'Create an image developed from',
+        'Create an image that frames',
+        'Create an image pointing toward',
+        'Create an image featuring the idea of',
+        'Create an image derived from the',
+        'Create an image spotlighting',
+        'Create an image that outlines the',
+        'Create an image based on',
+        'Create an image referencing this',
+        'Create an image in relation to',
+        'Create an image visualizing the',
+        'Create an image that conveys the',
+        'Create an image focusing on this',
+        'Create an image combining the ideas of',
+        'Create an image capturing the details of',
+        'Create an image illustrating the process of',
+        'Create an image that merges ideas from',
+        'Create an image featuring elements of',
+        'Create an image dissecting',
+        'Create an image emphasizing the importance of',
+        'Create an image underscoring',
+        'Create an image weaving together',
+        'Create an image tying in',
+        'Create an image about the concept of',
+        'Create an image summarizing the main points of',
+      ].map(p => ({
+        text: p,
+        type: 'prompt',
+        weight: 1,
+        keywords: p.toLowerCase().split(' ')
+      }))
+    };
+
+    // Debounce function
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+      };
+    }
+
+    // Function to get Google search suggestions
+    function getGoogleSuggestions(query) {
+      console.log('Fetching Google suggestions for:', query);
+      return new Promise((resolve, reject) => {
+        google.script.run
+          .withSuccessHandler(suggestions => {
+            console.log('Received Google suggestions:', suggestions);
+            resolve(suggestions.map(suggestion => ({
+              text: suggestion,
+              type: 'google',
+              weight: 2,
+              keywords: suggestion.toLowerCase().split(' ')
+            })));
+          })
+          .withFailureHandler(error => {
+            console.error('Google suggestions error:', error);
+            resolve([]);
+          })
+          .getSearchSuggestions(query);
+      });
+    }
+
+    function setupAutocomplete(textarea) {
+      console.log('Setting up autocomplete for textarea:', textarea);
+      
+      // Store the original placeholder
+      const originalPlaceholder = textarea.placeholder;
+      textarea.placeholder = '';
+      
+      const container = textarea.parentElement;
+      const inlineSuggestion = document.createElement('div');
+      inlineSuggestion.className = 'inline-suggestion';
+
+      // Copy computed styles from textarea
+      const computedStyle = window.getComputedStyle(textarea);
+      inlineSuggestion.style.fontSize = computedStyle.fontSize;
+      inlineSuggestion.style.fontFamily = computedStyle.fontFamily;
+      inlineSuggestion.style.lineHeight = computedStyle.lineHeight;
+      inlineSuggestion.style.boxSizing = computedStyle.boxSizing;
+      inlineSuggestion.style.width = computedStyle.width;
+      inlineSuggestion.style.height = computedStyle.height;
+
+      container.appendChild(inlineSuggestion);
+
+      const tabHint = document.createElement('div');
+      tabHint.className = 'inline-suggestion-hint';
+      tabHint.textContent = 'Press Tab to complete';
+      container.appendChild(tabHint);
+
+      let currentSuggestion = null;
+      let lastInputValue = '';
+
+      function updateInlineSuggestion(suggestion) {
+        console.log('Updating suggestion:', suggestion);
+        
+        if (!suggestion) {
+          inlineSuggestion.textContent = '';
+          inlineSuggestion.style.display = 'none';
+          tabHint.classList.remove('visible');
+          currentSuggestion = null;
+          // Restore placeholder if no text
+          if (!textarea.value) {
+            textarea.placeholder = originalPlaceholder;
+          }
+          return;
+        }
+
+        // Hide placeholder when showing suggestion
+        textarea.placeholder = '';
+
+        const value = textarea.value;
+        const cursorPos = textarea.selectionStart;
+        const textBeforeCursor = value.substring(0, cursorPos);
+
+        // Find the best matching suggestion
+        let suggestionText = suggestion.text;
+        const inputLower = textBeforeCursor.toLowerCase().trim();
+        const suggestionLower = suggestionText.toLowerCase();
+
+        if (inputLower && suggestionLower.startsWith(inputLower)) {
+          // Show the remaining part of the suggestion
+          suggestionText = suggestion.text.substring(inputLower.length);
+          
+          // Only add space if we're not at a word boundary
+          if (!textBeforeCursor.endsWith(' ') && textBeforeCursor.length > 0) {
+            suggestionText = ' ' + suggestionText;
+          }
+        }
+
+        console.log('Input text:', inputLower);
+        console.log('Suggestion text:', suggestionText);
+
+        if (suggestionText) {
+          inlineSuggestion.style.display = 'block';
+          inlineSuggestion.textContent = value + suggestionText;
+          
+          currentSuggestion = {
+            ...suggestion,
+            displayText: suggestionText
+          };
+          tabHint.classList.add('visible');
+        } else {
+          updateInlineSuggestion(null);
+        }
+      }
+
+      function acceptSuggestion() {
+        if (!currentSuggestion) return false;
+        
+        console.log('Accepting suggestion:', currentSuggestion);
+
+        const value = textarea.value;
+        const cursorPos = textarea.selectionStart;
+        const textBeforeCursor = value.substring(0, cursorPos);
+        const textAfterCursor = value.substring(cursorPos);
+
+        let newText = '';
+        let newCursorPos = 0;
+
+        if (textBeforeCursor.match(VARIABLE_REGEX)) {
+          newText = textBeforeCursor.replace(VARIABLE_REGEX, `{{${currentSuggestion.text}}}`) + textAfterCursor;
+          newCursorPos = textBeforeCursor.length + currentSuggestion.text.length + 2;
+        } else if (textBeforeCursor.match(COMMAND_REGEX)) {
+          // For commands, ensure we only have one leading slash
+          const commandText = currentSuggestion.text.replace(/^\/+/, ''); // Remove any leading slashes from suggestion
+          const inputText = textBeforeCursor.replace(/^\/+/, ''); // Remove any leading slashes from input
+          newText = '/' + commandText + ' ' + textAfterCursor;
+          newCursorPos = commandText.length + 2; // +2 for the "/" and space
+        } else {
+          const inputText = textBeforeCursor.trim();
+          const suggestionText = currentSuggestion.text;
+          const completionText = suggestionText.substring(inputText.length);
+          newText = textBeforeCursor + completionText + textAfterCursor;
+          newCursorPos = textBeforeCursor.length + completionText.length;
+        }
+
+        textarea.value = newText;
+        textarea.selectionStart = textarea.selectionEnd = newCursorPos;
+        
+        updateInlineSuggestion(null);
+        textarea.focus();
+        
+        return true;
+      }
+
+      const debouncedUpdateSuggestions = debounce(async (text) => {
+        console.log('Debounced update for:', text);
+        
+        const inputText = text.toLowerCase().trim();
+        
+        // First try local suggestions
+        const localMatches = suggestions.prompts
+          .filter(p => {
+            const suggestionText = p.text.toLowerCase();
+            return suggestionText.startsWith(inputText);
+          })
+          .sort((a, b) => {
+            // Prioritize exact matches
+            const aStartsExact = a.text.toLowerCase().startsWith(inputText);
+            const bStartsExact = b.text.toLowerCase().startsWith(inputText);
+            if (aStartsExact && !bStartsExact) return -1;
+            if (!aStartsExact && bStartsExact) return 1;
+            return 0;
+          })
+          .slice(0, 5);
+
+        if (localMatches.length > 0) {
+          console.log('Found local matches:', localMatches);
+          const suggestion = localMatches[0];
+          const displayText = suggestion.text.substring(inputText.length);
+          
+          console.log('Prompt match:', {
+            inputText,
+            suggestionText: suggestion.text,
+            displayText
+          });
+          
+          updateInlineSuggestion({
+            ...suggestion,
+            text: suggestion.text,
+            displayText: displayText
+          });
+        } else {
+          updateInlineSuggestion(null);
+        }
+
+        // Then try Google suggestions
+        try {
+          const googleSuggestions = await getGoogleSuggestions(text);
+          if (googleSuggestions.length > 0) {
+            console.log('Found Google suggestions:', googleSuggestions);
+            const suggestion = googleSuggestions[0];
+            const displayText = suggestion.text.substring(inputText.length);
+            
+            updateInlineSuggestion({
+              ...suggestion,
+              text: suggestion.text,
+              displayText: displayText
+            });
+          }
+        } catch (error) {
+          console.error('Error getting Google suggestions:', error);
+        }
+      }, DEBOUNCE_MS);
+
+      textarea.addEventListener('input', (e) => {
+        console.log('Input event triggered');
+        
+        const cursorPos = textarea.selectionStart;
+        const textBeforeCursor = textarea.value.substring(0, cursorPos);
+        const hasDeleted = textarea.value.length < lastInputValue.length;
+        lastInputValue = textarea.value;
+
+        // Clear suggestion if backspacing/deleting
+        if (hasDeleted) {
+          updateInlineSuggestion(null);
+          return;
+        }
+
+        // Clear any placeholder text when user starts typing
+        if (textarea.placeholder && textarea.value) {
+          textarea.placeholder = '';
+        }
+
+        // Variable completion
+        const variableMatch = textBeforeCursor.match(VARIABLE_REGEX);
+        if (variableMatch) {
+          const searchText = variableMatch[1].toLowerCase();
+          const matches = suggestions.variables
+            .filter(v => v.text.toLowerCase().startsWith(searchText))
+            .sort((a, b) => {
+              const aStartsExact = a.text.toLowerCase().startsWith(searchText);
+              const bStartsExact = b.text.toLowerCase().startsWith(searchText);
+              if (aStartsExact && !bStartsExact) return -1;
+              if (!aStartsExact && bStartsExact) return 1;
+              return 0;
+            });
+
+          if (matches.length > 0) {
+            const suggestion = matches[0];
+            const displayText = suggestion.text.substring(searchText.length);
+            updateInlineSuggestion({
+              ...suggestion,
+              displayText: displayText
+            });
+          } else {
+            updateInlineSuggestion(null);
+          }
+          return;
+        }
+
+        // General suggestions (including commands)
+        const inputText = textBeforeCursor.toLowerCase().trim();
+        if (inputText.length >= 1) {
+          const matches = suggestions.prompts
+            .filter(p => p.text.toLowerCase().startsWith(inputText))
+            .sort((a, b) => {
+              const aStartsExact = a.text.toLowerCase().startsWith(inputText);
+              const bStartsExact = b.text.toLowerCase().startsWith(inputText);
+              if (aStartsExact && !bStartsExact) return -1;
+              if (!aStartsExact && bStartsExact) return 1;
+              return 0;
+            });
+
+          if (matches.length > 0) {
+            const suggestion = matches[0];
+            const displayText = suggestion.text.substring(inputText.length);
+            
+            updateInlineSuggestion({
+              ...suggestion,
+              text: suggestion.text,
+              displayText: displayText
+            });
+          } else {
+            updateInlineSuggestion(null);
+          }
+        } else {
+          updateInlineSuggestion(null);
+        }
+      });
+
+      textarea.addEventListener('keydown', (e) => {
+        if (e.key === 'Tab' && currentSuggestion) {
+          e.preventDefault();
+          acceptSuggestion();
+        } else if (e.key === 'Escape') {
+          updateInlineSuggestion(null);
+        }
+      });
+
+      // Handle scrolling
+      textarea.addEventListener('scroll', () => {
+        inlineSuggestion.scrollTop = textarea.scrollTop;
+      });
+
+      // Handle window resize
+      window.addEventListener('resize', () => {
+        inlineSuggestion.style.width = textarea.offsetWidth + 'px';
+        inlineSuggestion.style.height = textarea.offsetHeight + 'px';
+      });
+
+      // Clean up suggestions when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!textarea.contains(e.target)) {
+          updateInlineSuggestion(null);
+        }
+      });
+    }
+
+    // Initialize everything when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('Page loaded, initializing autocomplete...');
+      
+      // Setup autocomplete for all textareas
+      document.querySelectorAll('textarea[data-autocomplete="true"]').forEach(textarea => {
+        console.log('Found textarea for autocomplete:', textarea);
+        setupAutocomplete(textarea);
+      });
+
+      // Initialize all number inputs
+      document.querySelectorAll('.number-input').forEach(input => {
+        // Handle keydown for special keys (arrows, delete, backspace)
+        input.addEventListener('keydown', (e) => {
+          // Allow: backspace, delete, tab, escape, enter, arrow keys, home, end, select all
+          const allowedKeys = [
+            'Backspace', 'Delete', 'Tab', 'Escape', 'Enter', 
+            'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
+            'Home', 'End'
+          ];
+          
+          // Allow Ctrl+A (select all)
+          if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
+            return;
+          }
+
+          if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            input.value = Math.max(1, (parseInt(input.value) || 1) + 1);
+          } else if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            input.value = Math.max(1, (parseInt(input.value) || 1) - 1);
+          }
+
+          // If not a number or not an allowed key, prevent default
+          if (!/[0-9]/.test(e.key) && !allowedKeys.includes(e.key)) {
+            e.preventDefault();
+          }
+        });
+
+        // Prevent paste of non-numeric values
+        input.addEventListener('paste', (e) => {
+          const pastedData = e.clipboardData.getData('text');
+          if (!/^\d+$/.test(pastedData)) {
+            e.preventDefault();
+          }
+        });
+
+        // Clean up value on blur
+        input.addEventListener('blur', () => {
+          const value = parseInt(input.value) || 1;
+          input.value = Math.max(1, value);
+        });
+
+        // Handle input event for validation
+        input.addEventListener('input', () => {
+          if (input.value === '') return; // Allow empty value during editing
+          const value = parseInt(input.value) || 1;
+          if (isNaN(value)) {
+            input.value = 1;
+          }
+        });
+      });
+
+      // Initialize spinner buttons
+      document.querySelectorAll('.spinner-button').forEach(button => {
+        const input = button.closest('.number-spinner, .number-input-container')?.querySelector('.number-input');
+        if (!input) return;
+
+        button.addEventListener('click', () => {
+          const currentValue = parseInt(input.value) || 1;
+          if (button.classList.contains('up')) {
+            input.value = Math.max(1, currentValue + 1);
+          } else {
+            input.value = Math.max(1, currentValue - 1);
+          }
+        });
+      });
+    });
+
+    // Add click handler to focus number inputs when their container is clicked
+    document.querySelectorAll('.column-name-row-container').forEach(container => {
+      container.addEventListener('click', (e) => {
+        // Only focus if we didn't click directly on the input (to avoid double-focus)
+        if (!(e.target instanceof HTMLInputElement)) {
+          const numberInput = container.querySelector('.number-input');
+          if (numberInput) {
+            numberInput.focus();
+          }
+        }
+      });
+    });
+    </script>
+  </body>
+</html>
