@@ -1232,6 +1232,22 @@
         width: 100%;
       }
 
+      .column-name-row-input:has(.action-panel-button.active),
+      #fixedStartSection.active {
+        box-shadow: inset 0 1px 4px rgba(156, 180, 0, 1);
+        transform: scale(0.99);
+      }
+
+      .column-name-row-input:hover:not(:has(.action-panel-button.active)):not(.active) {
+        box-shadow: inset 0 1px 4px rgba(156, 180, 0, 1);
+        transform: scale(0.99);
+      }
+
+      .column-name-row-input:has(.action-panel-button.active) .action-panel-button,
+      #fixedStartSection.active .form-label {
+        transform: scale(0.99);
+      }
+
     </style>
   </head>
   <body>
