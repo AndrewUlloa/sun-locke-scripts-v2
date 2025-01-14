@@ -96,10 +96,68 @@ function getSearchSuggestions(query) {
 }
 
 /**
+ * Gets all sheet names from the active spreadsheet
+ */
+function getSheetNames() {
+  return SpreadsheetService.getSheetNames();
+}
+
+/**
+ * Gets all column letters from a specific sheet
+ */
+function getColumnLetters(sheetName) {
+  return SpreadsheetService.getColumnLetters(sheetName);
+}
+
+/**
+ * Gets column headers and letters from a specific sheet
+ * @param {string} sheetName - Name of the sheet
+ * @param {number} headerRow - Row number containing headers
+ * @return {Object} Object containing headers and column letters
+ */
+function getColumnHeaders(sheetName, headerRow) {
+  const headers = SpreadsheetService.getColumnHeaders(sheetName, headerRow);
+  const letters = SpreadsheetService.getColumnLetters(sheetName);
+
+  return {
+    headers: Object.fromEntries(headers),
+    letters: letters,
+  };
+}
+
+/**
+ * Processes a custom prompt for a range of spreadsheet cells
+ */
+function processCustomPrompt(config) {
+  return PromptService.processCustomPrompt(config);
+}
+
+/**
  * Needed to expose the function to the client-side code
  */
 function doGet() {
   return HtmlService.createHtmlOutputFromFile("sidebar")
     .setTitle("Sun Locke")
     .setWidth(300);
+}
+
+/**
+ * Gets all sheet data including names and columns in one call
+ * @return {Object} Object containing all sheet data
+ */
+function getAllSheetData() {
+  try {
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const sheets = spreadsheet.getSheets();
+
+    return {
+      sheets: sheets.map((sheet) => ({
+        name: sheet.getName(),
+        columns: SpreadsheetService.getColumnLetters(sheet.getName()),
+      })),
+    };
+  } catch (error) {
+    console.error("Error getting all sheet data:", error);
+    throw new Error("Failed to load spreadsheet data");
+  }
 }

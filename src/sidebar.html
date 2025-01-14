@@ -560,18 +560,16 @@
         display: flex;
         flex-direction: column;
         gap: 14px;
+        width: 100%;
+        margin-bottom: 16px;
       }
 
       .form-row {
         display: flex;
-        flex: 1;
-        flex-direction: row; 
+        flex-direction: row;
         align-items: center;
         justify-content: space-between;
-      }
-
-      .insert-variables-row {
-        padding-right: 6px;
+        width: 100%;
       }
 
       .form-inner-container {
@@ -580,6 +578,45 @@
         flex-direction: row;
         align-items: center;
         gap: 6px;
+        width: 100%;
+        min-width: 0;
+      }
+
+      /* First select in each group (grows with priority) */
+      .form-inner-container .select-input:first-of-type {
+        flex: 1 1 auto;
+        min-width: 0;
+        width: 0; /* Allow shrinking */
+      }
+
+      /* Second select in each group (shrinks to fit) */
+      .form-inner-container .select-input:last-of-type {
+        flex: 0 1 auto;
+        width: auto;
+        min-width: 60px; /* Minimum width to ensure readability */
+      }
+
+      /* Common select styles */
+      .select-input {
+        padding: 6px 24px 6px 8px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-family: inherit;
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 0px 4px 0px rgba(4, 0, 255, 0.25);
+        border: 0.5px solid white;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: var(--bg-white);
+        background-image: url('data:image/svg+xml;utf8,<svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L5 5.5L9 1.5" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+        background-repeat: no-repeat;
+        background-position: right 8px center;
+        cursor: pointer;
+        transition: all 200ms ease-in-out;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
       }
 
       .form-label {
@@ -667,27 +704,41 @@
         color: var(--text-color);
       }
 
-      .select-input {
-        display: flex;
-        flex: 1;
-        padding: 6px 8px;
-        border-radius: 8px;
+      .select-input option {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        max-width: 100%;
+        padding-right: 16px; /* Add some padding for better readability */
+      }
+
+      .connector-text {
+        flex: 0 0 auto;
+        color: var(--secondary-text);
         font-size: 14px;
-        font-family: inherit;
-        min-width: 100px;
-        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
-                    0px 0px 4px 0px rgba(4, 0, 255, 0.25);
-        border: 0.5px solid white;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        background: var(--bg-white);
-        background-image: url('data:image/svg+xml;utf8,<svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L5 5.5L9 1.5" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg>');
-        background-repeat: no-repeat;
-        background-position: right 8px center;
-        padding-right: 20px;
-        cursor: pointer;
-        transition: all 200ms ease-in-out;
+        font-weight: 400;
+        white-space: nowrap;
+      }
+
+      /* Ensure the variable selectors don't overflow */
+      .insert-variables-row .select-input {
+        min-width: 0;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      /* First select (variable type) should grow */
+      .insert-variables-row .select-input[aria-label="Select variable type"] {
+        flex: 1;
+        width: 0;
+      }
+
+      /* Second select (column letter) should hug content */
+      .insert-variables-row .select-input[aria-label="Select column letter"] {
+        flex: 0 0 auto;
+        width: auto;
+        min-width: 60px;
       }
 
       .select-input::-ms-expand {
@@ -707,13 +758,6 @@
 
       .select-input.small {
         min-width: 60px;
-      }
-
-      .connector-text {
-        color: var(--secondary-text);
-        font-size: 14px;
-        font-weight: 400;
-        text-wrap: nowrap;
       }
 
       .info-button {
@@ -1248,7 +1292,403 @@
         transform: scale(0.99);
       }
 
+      .form-row.insert-variables-row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+      }
+
+      .form-row.insert-variables-row .form-inner-container {
+        display: flex;
+        flex: 1;
+        flex-direction: row;
+        align-items: center;
+        gap: 6px;
+        min-width: 0;
+      }
+
+      .form-row.insert-variables-row .select-input {
+        flex: 1;
+        min-width: 0;
+        max-width: none;
+        width: 0;
+        padding: 6px 24px 6px 8px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-family: inherit;
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 0px 4px 0px rgba(4, 0, 255, 0.25);
+        border: 0.5px solid white;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: var(--bg-white);
+        background-image: url('data:image/svg+xml;utf8,<svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L5 5.5L9 1.5" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+        background-repeat: no-repeat;
+        background-position: right 8px center;
+        cursor: pointer;
+        transition: all 200ms ease-in-out;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      .connector-text.or {
+        padding: 0 4px;
+        color: var(--secondary-text);
+        font-size: 14px;
+        font-weight: 400;
+        white-space: nowrap;
+      }
+
+      /* Custom dropdown styles */
+      .custom-dropdown {
+        position: relative;
+        min-width: 0;
+        flex: 1;
+      }
+
+      .custom-dropdown.letter-dropdown {
+        flex: 0 0 auto;
+        width: auto;
+        min-width: 60px;
+      }
+
+      .dropdown-button {
+        width: 100%;
+        padding: 6px 24px 6px 8px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-family: inherit;
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 0px 4px 0px rgba(4, 0, 255, 0.25);
+        border: 0.5px solid white;
+        background: var(--bg-white);
+        background-image: url('data:image/svg+xml;utf8,<svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L5 5.5L9 1.5" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+        background-repeat: no-repeat;
+        background-position: right 8px center;
+        cursor: pointer;
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        transition: all 200ms ease-in-out;
+      }
+
+      .dropdown-button:hover {
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 0px 4px 0px rgba(4, 0, 255, 0.5);
+      }
+
+      .dropdown-button:focus {
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 0px 4px 0px rgba(4, 0, 255, 0.5);
+      }
+
+      .dropdown-button:has(+ .dropdown-options.show) {
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1),
+                    0px 0px 4px 0px rgba(4, 0, 255, 0.5);
+      }
+      
+      .dropdown-options {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 0.5px solid #E5E7EB;
+        border-radius: 8px;
+        box-shadow: 0px 4px 6px -2px rgba(0, 0, 0, 0.05), 
+                    0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.2s ease;
+        max-height: 200px;
+        overflow-y: auto;
+        margin-top: 12px;
+        width: 100%;
+        min-width: 100%;
+        max-width: 160px; /* Expanded width */
+        /* Customize scrollbar */
+        scrollbar-width: thin;
+        scrollbar-color: #CBD5E1 transparent;
+      }
+
+
+
+      .dropdown-options::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .dropdown-options::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .dropdown-options::-webkit-scrollbar-thumb {
+        background-color: #CBD5E1;
+        border-radius: 3px;
+      }
+
+      .dropdown-options.show {
+        display: flex;
+        flex-direction: column;
+        opacity: 1;
+        gap: 2px;
+        padding: 4px;
+        visibility: visible;
+        border: 0.5px solid #ffffff;
+        transform: translateY(0);
+        width: 160px; /* Expanded width */
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1), 
+                        0px 0px 4px 0px rgba(4, 0, 255, 0.25);
+
+      }
+
+      .dropdown-options.show:has(.dropdown-option:hover) {
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1), 
+                        0px 0px 4px 0px rgba(4, 0, 255, 0.5);
+      }
+
+      /* Ensure the parent container has proper positioning */
+      .custom-dropdown {
+        position: relative;
+      }
+
+      /* Specific styling for the letter dropdown */
+      .letter-dropdown .dropdown-options {
+        max-width: 60px; /* Smaller max width for letter dropdown */
+      }
+
+      .letter-dropdown .dropdown-options.show {
+        width: 60px; /* Smaller expanded width for letter dropdown */
+      }
+
+      .dropdown-option {
+        word-wrap: anywhere;
+        padding: 8px 12px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        border-radius: 8px;
+        box-shadow: inset 0 0.5px 4px rgba(212, 212, 212, 1);
+        transition: background 150ms ease;
+      }
+
+      .dropdown-option:hover {
+        background: rgba(4, 0, 255, 0.1);
+      }
+
+      .loading-placeholder {
+        color: #94A3B8;
+        font-style: italic;
+      }
+
+      .select-input.loading {
+        opacity: 0.7;
+        cursor: wait;
+      }
+
+      /* Refresh button styles */
+      .refresh-button {
+        display: inline-flex;
+        flex: 0;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        background: white;
+        border: 1px solid #E5E7EB;
+        border-radius: 6px;
+        color: #4B5563;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-bottom: 12px;
+      }
+
+      .refresh-button:hover {
+        background: #F9FAFB;
+        border-color: #D1D5DB;
+      }
+
+      .refresh-button:active {
+        background: #F3F4F6;
+        transform: scale(0.98);
+      }
+
+      .refresh-button svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      .refresh-button.loading {
+        opacity: 0.7;
+        cursor: wait;
+      }
+
+      .refresh-button.loading svg {
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+
+      /* Loading states */
+      .loading-placeholder {
+        color: #94A3B8;
+        font-style: italic;
+      }
+
+      .select-input.loading {
+        opacity: 0.7;
+        cursor: wait;
+      }
+
+      /* Loading states for dropdowns */
+      .custom-dropdown.loading .dropdown-button {
+        opacity: 0.7;
+        cursor: wait;
+      }
+
+      /* Only show loading dots when in loading state */
+      .custom-dropdown .dropdown-button::after {
+        content: none;
+      }
+
+
+      /* Loading state refinements */
+      .custom-dropdown.loading .dropdown-button {
+        opacity: 0.7;
+        cursor: wait;
+      }
+
+      /* Loading indicator */
+      .loading-dots {
+        display: none;
+        position: absolute;
+        right: 8px;
+        font-style: italic;
+        color: #94A3B8;
+      }
+
+      .custom-dropdown.loading .loading-dots {
+        display: block;
+      }
+
+      /* Base dropdown button styles */
+      .dropdown-button {
+        position: relative;
+        width: 100%;
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      /* Variable type dropdown specific styles */
+      #variableTypeDropdown {
+        max-width: 50px;
+        min-width: 50px;
+      }
+
+      #variableTypeDropdown .dropdown-button {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        padding-right: 20px; /* Space for the ellipsis */
+      }
+
+      /* Letter dropdown specific styles */
+      #columnLetterDropdown {
+        min-width: 60px;
+        width: 60px;
+      }
     </style>
+
+    <script>
+      // Initialize when document loads
+      document.addEventListener('DOMContentLoaded', () => {
+        // Initialize dropdowns with loading state and pre-fetch all data
+        getAllSheetData();
+        
+        // Add click handler to refresh button
+        const refreshButton = document.querySelector('.breadcrumb-support-nav-bar-item');
+        if (refreshButton) {
+          refreshButton.addEventListener('click', () => {
+            // Clear cache
+            cache.sheets = null;
+            cache.columns = {};
+            cache.headers = {};
+            // Fetch fresh data
+            getAllSheetData();
+          });
+        }
+        
+        // Rest of the initialization code...
+        const variableDropdown = document.getElementById('variableTypeDropdown');
+        const letterDropdown = document.getElementById('columnLetterDropdown');
+        const promptTextarea = document.querySelector('.prompt-input');
+
+        if (variableDropdown && letterDropdown && promptTextarea) {
+          // ... existing dropdown event listeners ...
+        }
+
+        // Add change listeners to sheet selectors
+        const sheetSelects = document.querySelectorAll('select[aria-label*="sheet" i]');
+        sheetSelects.forEach(select => {
+          select.addEventListener('change', (e) => {
+            if (select.getAttribute('aria-label') === 'Select sheet') {
+              // Use cached data
+              const sheetName = e.target.value;
+              if (cache.columns[sheetName]) {
+                populateColumnDropdowns(cache.columns[sheetName]);
+              }
+              updateVariableSelectors(); // Update variables when sheet changes
+            }
+          });
+        });
+
+        // Add refresh button handler
+        const refreshButton = document.createElement('div');
+        refreshButton.className = 'breadcrumb-support-nav-bar-item';
+        refreshButton.innerHTML = `
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_967_6393)">
+              <path d="M12.7675 7.87508C12.3453 10.6817 9.92362 12.8334 6.99935 12.8334C3.77769 12.8334 1.16602 10.2217 1.16602 7.00008C1.16602 3.77842 3.77769 1.16675 6.99935 1.16675C9.39139 1.16675 11.4471 2.60653 12.3473 4.66675" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9.91602 4.66667H12.2327C12.5641 4.66667 12.8327 4.39804 12.8327 4.06667V1.75" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+            <defs>
+              <clipPath id="clip0_967_6393">
+                <rect width="14" height="14" fill="currentColor"/>
+              </clipPath>
+            </defs>
+          </svg>
+          <a class="breadcrumb-support-nav-bar-item-link">Refresh Data</a>
+        `;
+
+        refreshButton.addEventListener('click', () => {
+          // Clear cache
+          cache.sheets = null;
+          cache.columns = {};
+          cache.headers = {};
+          // Fetch fresh data
+          getAllSheetData();
+        });
+
+        // Insert into the breadcrumb navigation bar
+        const breadcrumbNav = document.querySelector('.breadcrumb-support-nav-bar');
+        if (breadcrumbNav) {
+          breadcrumbNav.appendChild(refreshButton);
+        }
+      });
+    </script>
   </head>
   <body>
     <div class="container">
@@ -1295,6 +1735,22 @@
           <div class="model-selector">
             <div class="model-button" data-model-type="image">FLUX.1 [dev]</div>
           </div>
+        </div>
+      </div>
+      <div class="breadcrumb-support-nav-bar">
+        <div class="breadcrumb-support-nav-bar-item">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_967_6393)">
+              <path d="M12.7675 7.87508C12.3453 10.6817 9.92362 12.8334 6.99935 12.8334C3.77769 12.8334 1.16602 10.2217 1.16602 7.00008C1.16602 3.77842 3.77769 1.16675 6.99935 1.16675C9.39139 1.16675 11.4471 2.60653 12.3473 4.66675" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9.91602 4.66667H12.2327C12.5641 4.66667 12.8327 4.39804 12.8327 4.06667V1.75" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+            <defs>
+              <clipPath id="clip0_967_6393">
+                <rect width="14" height="14" fill="currentColor"/>
+              </clipPath>
+            </defs>
+          </svg>
+          <a class="breadcrumb-support-nav-bar-item-link">Refresh Data</a>
         </div>
       </div>
       <div class="main-content">
@@ -1830,7 +2286,7 @@
                           pattern="[0-9]*"
                           class="number-input" 
                           value="1" 
-                          aria-label="Number input"
+                          aria-label="Column name row"
                         >
                         <div class="spinner-controls">
                           <button class="spinner-button up" aria-label="Increase value"><svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.5L5 1.5L9 5.5" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -1870,13 +2326,15 @@
                 <div class="form-row insert-variables-row">
                     <div class="form-inner-container">
                       <label class="connector-text">Insert variables:</label>
-                      <select class="select-input select-input-column" aria-label="Select variable type" title="Select variable type">
-                          <option>Active</option>
-                      </select>
+                      <div class="custom-dropdown" id="variableTypeDropdown">
+                        <button type="button" class="dropdown-button" aria-label="Select variable type">Active</button>
+                        <div class="dropdown-options"></div>
+                      </div>
                       <span class="connector-text">or</span>
-                      <select class="select-input select-input-column" aria-label="Select column letter" title="Select column letter">
-                          <option>A</option>
-                      </select>
+                      <div class="custom-dropdown letter-dropdown" id="columnLetterDropdown">
+                        <button type="button" class="dropdown-button" aria-label="Select column letter">A</button>
+                        <div class="dropdown-options"></div>
+                      </div>
                     </div>
                     <button class="info-button" title="Help">
                       <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -3689,29 +4147,6 @@
             return;
           }
 
-          // Handle arrow keys for all number inputs
-        //   if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-        //     e.preventDefault();
-        //     const currentValue = parseInt(input.value) || 0;
-        //     let newValue = currentValue;
-            
-        //     if (e.key === 'ArrowUp') {
-        //       newValue = currentValue + 1;
-        //     } else {
-        //       newValue = Math.max(1, currentValue - 1);
-        //     }
-
-        //     if (newValue >= 1) {
-        //       input.value = newValue;
-        //       // Update state and button text only for rowCountInput
-        //       if (input.id === 'rowCountInput') {
-        //         state.rowCount = newValue;
-        //         updateRunButtonText();
-        //       }
-        //     }
-        //     return;
-        //   }
-
           // For all number inputs, only allow numbers and special keys
           if (!allowedKeys.includes(e.key) && !/[0-9]/.test(e.key)) {
             e.preventDefault();
@@ -4003,6 +4438,647 @@
                 toggleStartRow('fixed');
             }
         });
+    });
+
+    // Cache storage for sheets and columns
+    const cache = {
+      sheets: null,
+      columns: {},
+      headers: {}
+    };
+
+    // Update sheet and column dropdowns independently
+    function updateSheetAndColumnDropdowns() {
+      // If we have cached sheets, use them
+      if (cache.sheets) {
+        populateSheetDropdowns(cache.sheets);
+        return;
+      }
+
+      // Otherwise fetch from server
+      google.script.run
+        .withSuccessHandler(sheets => {
+          // Cache the sheets
+          cache.sheets = sheets;
+          populateSheetDropdowns(sheets);
+        })
+        .withFailureHandler(error => {
+          console.error('Error getting sheets:', error);
+          showNotification('error', 'Failed to load sheets');
+        })
+        .getSheetNames();
+    }
+
+    // Populate sheet dropdowns with data
+    function populateSheetDropdowns(sheets) {
+      const inputSheetSelect = document.querySelector('select[aria-label="Select sheet"]');
+      const outputSheetSelect = document.querySelector('select[aria-label="Select output sheet"]');
+      
+      [inputSheetSelect, outputSheetSelect].forEach(select => {
+        if (!select) return;
+        select.innerHTML = '';
+        if (sheets.length === 0) {
+          const option = document.createElement('option');
+          option.value = '';
+          option.textContent = 'Sheet';
+          select.appendChild(option);
+        } else {
+          sheets.forEach(sheet => {
+            const option = document.createElement('option');
+            option.value = sheet;
+            option.textContent = sheet;
+            select.appendChild(option);
+          });
+          select.selectedIndex = 0;
+          // Trigger change event to update column dropdowns
+          if (select === inputSheetSelect) {
+            updateSheetColumns(sheets[0]);
+          }
+        }
+      });
+    }
+
+    // Update just the sheet columns (not affected by column name row)
+    function updateSheetColumns(sheetName) {
+      // If we have cached columns for this sheet, use them
+      if (cache.columns[sheetName]) {
+        populateColumnDropdowns(cache.columns[sheetName]);
+        return;
+      }
+
+      // Otherwise fetch from server
+      google.script.run
+        .withSuccessHandler(letters => {
+          // Cache the columns
+          cache.columns[sheetName] = letters;
+          populateColumnDropdowns(letters);
+        })
+        .withFailureHandler(error => {
+          console.error('Error getting columns:', error);
+          showNotification('error', 'Failed to load columns');
+        })
+        .getColumnLetters(sheetName);
+    }
+
+    // Populate column dropdowns with data
+    function populateColumnDropdowns(letters) {
+      const inputColumnSelect = document.querySelector('select[aria-label="Select column"]');
+      const outputColumnSelect = document.querySelector('select[aria-label="Select output column"]');
+      
+      [inputColumnSelect, outputColumnSelect].forEach(select => {
+        if (!select) return;
+        select.innerHTML = '';
+        if (letters.length === 0) {
+          const option = document.createElement('option');
+          option.value = '';
+          option.textContent = 'Column';
+          select.appendChild(option);
+        } else {
+          letters.forEach(column => {
+            const option = document.createElement('option');
+            option.value = column;
+            option.textContent = column;
+            select.appendChild(option);
+          });
+          select.selectedIndex = 0;
+        }
+      });
+    }
+
+    // Update variable selectors based on column name row
+    function updateVariableSelectors() {
+      const headerRowInput = document.querySelector('input[aria-label="Column name row"]');
+      const activeSheetSelect = document.querySelector('select[aria-label="Select sheet"]');
+      const headerRow = parseInt(headerRowInput?.value) || 1;
+      const currentSheet = activeSheetSelect?.value;
+
+      if (!currentSheet) return;
+
+      // Show loading state
+      const variableDropdown = document.getElementById('variableTypeDropdown');
+      const letterDropdown = document.getElementById('columnLetterDropdown');
+      
+      if (variableDropdown && letterDropdown) {
+        variableDropdown.classList.add('loading');
+        letterDropdown.classList.add('loading');
+        
+        const variableButton = variableDropdown.querySelector('.dropdown-button');
+        const letterButton = letterDropdown.querySelector('.dropdown-button');
+        if (variableButton && letterButton) {
+          variableButton.textContent = 'Loading...';
+          letterButton.textContent = 'Loading...';
+        }
+      }
+
+      google.script.run
+        .withSuccessHandler(result => {
+          if (variableDropdown && letterDropdown) {
+            // Remove loading state
+            variableDropdown.classList.remove('loading');
+            letterDropdown.classList.remove('loading');
+            
+            const variableOptions = variableDropdown.querySelector('.dropdown-options');
+            const letterOptions = letterDropdown.querySelector('.dropdown-options');
+            const variableButton = variableDropdown.querySelector('.dropdown-button');
+            const letterButton = letterDropdown.querySelector('.dropdown-button');
+            
+            // Clear existing options
+            variableOptions.innerHTML = '';
+            letterOptions.innerHTML = '';
+
+            // Get all non-empty values from the specified row
+            const entries = Object.entries(result.headers)
+              .filter(([_, value]) => value) // Only include non-empty values
+              .sort((a, b) => a[0].localeCompare(b[0])); // Sort by column letter
+
+            // Add options to both dropdowns
+            entries.forEach(([letter, value]) => {
+              // Add to variable dropdown
+              const variableOption = document.createElement('div');
+              variableOption.className = 'dropdown-option';
+              variableOption.textContent = value;
+              variableOption.dataset.value = value;
+              variableOptions.appendChild(variableOption);
+
+              // Add to letter dropdown
+              const letterOption = document.createElement('div');
+              letterOption.className = 'dropdown-option';
+              letterOption.textContent = letter;
+              letterOption.dataset.value = letter;
+              letterOptions.appendChild(letterOption);
+            });
+
+            // Set initial values if there are entries
+            if (entries.length > 0) {
+              variableButton.textContent = entries[0][1];
+              letterButton.textContent = entries[0][0];
+            } else {
+              variableButton.textContent = 'Active';
+              letterButton.textContent = 'A';
+            }
+          }
+        })
+        .withFailureHandler(error => {
+          console.error('Error getting row values:', error);
+          showNotification('error', 'Failed to load row values');
+          
+          // Remove loading state on error
+          if (variableDropdown && letterDropdown) {
+            variableDropdown.classList.remove('loading');
+            letterDropdown.classList.remove('loading');
+            
+            const variableButton = variableDropdown.querySelector('.dropdown-button');
+            const letterButton = letterDropdown.querySelector('.dropdown-button');
+            if (variableButton && letterButton) {
+              variableButton.textContent = 'Active';
+              letterButton.textContent = 'A';
+            }
+          }
+        })
+        .getColumnHeaders(currentSheet, headerRow);
+    }
+
+    // Initialize when document loads
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initialize dropdowns
+      const variableDropdown = document.getElementById('variableTypeDropdown');
+      const letterDropdown = document.getElementById('columnLetterDropdown');
+      const promptTextarea = document.querySelector('.prompt-input');
+
+      if (variableDropdown && letterDropdown && promptTextarea) {
+        // Handle clicks on dropdown buttons
+        [variableDropdown, letterDropdown].forEach(dropdown => {
+          const button = dropdown.querySelector('.dropdown-button');
+          const options = dropdown.querySelector('.dropdown-options');
+
+          // Toggle dropdown on button click
+          button.addEventListener('click', () => {
+            options.classList.toggle('show');
+          });
+
+          // Handle option selection
+          options.addEventListener('click', (e) => {
+            const option = e.target.closest('.dropdown-option');
+            if (option) {
+              const value = option.dataset.value;
+              button.textContent = option.textContent;
+              options.classList.remove('show');
+              insertVariableIntoPrompt(promptTextarea, value);
+            }
+          });
+        });
+
+        // Close dropdowns when clicking outside or on another dropdown
+        document.addEventListener('click', (e) => {
+          const clickedDropdown = e.target.closest('.custom-dropdown');
+          document.querySelectorAll('.dropdown-options').forEach(dropdown => {
+            // Close if clicked outside dropdowns or on a different dropdown
+            if (!clickedDropdown || (clickedDropdown && dropdown.parentElement !== clickedDropdown)) {
+              dropdown.classList.remove('show');
+            }
+          });
+        });
+      }
+
+      // Initialize sheet dropdowns
+      updateSheetAndColumnDropdowns();
+      
+      // Add change listeners to sheet selectors
+      const sheetSelects = document.querySelectorAll('select[aria-label*="sheet" i]');
+      sheetSelects.forEach(select => {
+        select.addEventListener('change', (e) => {
+          if (select.getAttribute('aria-label') === 'Select sheet') {
+            updateSheetColumns(e.target.value);
+            updateVariableSelectors(); // Update variables when sheet changes
+          }
+        });
+      });
+
+      // Initialize column name row input
+      const headerRowInput = document.querySelector('input[aria-label="Column name row"]');
+      if (headerRowInput) {
+        // Update when value changes (typing, pasting, etc)
+        headerRowInput.addEventListener('input', () => {
+          updateVariableSelectors();
+        });
+
+        // Update when value changes via keyboard
+        headerRowInput.addEventListener('keyup', () => {
+          updateVariableSelectors();
+        });
+
+        // Update when focus is lost
+        headerRowInput.addEventListener('blur', () => {
+          updateVariableSelectors();
+        });
+
+        // Initialize spinner buttons
+        const upButton = headerRowInput.parentElement?.querySelector('.spinner-button.up');
+        const downButton = headerRowInput.parentElement?.querySelector('.spinner-button.down');
+        
+        if (upButton) {
+          upButton.addEventListener('click', () => {
+            const currentValue = parseInt(headerRowInput.value) || 1;
+            headerRowInput.value = currentValue + 1;
+            updateVariableSelectors();
+          });
+        }
+        
+        if (downButton) {
+          downButton.addEventListener('click', () => {
+            const currentValue = parseInt(headerRowInput.value) || 1;
+            if (currentValue > 1) {
+              headerRowInput.value = currentValue - 1;
+              updateVariableSelectors();
+            }
+          });
+        }
+      }
+
+      // Initialize variable selectors with data
+      updateVariableSelectors();
+    });
+
+    // Show notification function
+    function showNotification(type, message) {
+      // Implementation depends on your UI notification system
+      console.log(`${type}: ${message}`);
+    }
+
+    // Handle run button click
+    document.getElementById('runButton').addEventListener('click', function() {
+      const config = {
+        inputSheet: document.querySelector('select[aria-label="Select sheet"]').value,
+        inputColumn: document.querySelector('select[aria-label="Select column"]').value,
+        outputSheet: document.querySelector('select[aria-label="Select output sheet"]').value,
+        outputColumn: document.querySelector('select[aria-label="Select output column"]').value,
+        startRow: state.startRow || 1,
+        rowCount: state.rowCount || 1,
+        prompt: document.querySelector('.prompt-input').value,
+        systemInstructions: document.querySelector('.system-input').value,
+        model: document.querySelector('.model-button').textContent
+      };
+
+      // Disable run button and show loading state
+      this.disabled = true;
+      this.textContent = 'Processing...';
+
+      google.script.run
+        .withSuccessHandler(result => {
+          // Re-enable run button
+          this.disabled = false;
+          this.textContent = 'Run';
+
+          if (result.success) {
+            // Show success message
+            showNotification('success', result.message);
+          } else {
+            // Show error message
+            showNotification('error', result.message || 'An error occurred');
+          }
+        })
+        .withFailureHandler(error => {
+          // Re-enable run button
+          this.disabled = false;
+          this.textContent = 'Run';
+          
+          // Show error message
+          showNotification('error', error.message || 'An error occurred');
+        })
+        .processCustomPrompt(config);
+    });
+
+    // Initialize dropdowns when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      updateSheetAndColumnDropdowns();
+    });
+
+    // Add listener for column name row changes
+    document.addEventListener('DOMContentLoaded', () => {
+      const headerRowInput = document.querySelector('input[aria-label="Column name row"]');
+      const activeSheetSelect = document.querySelector('select[aria-label="Select sheet"]');
+      
+      if (headerRowInput) {
+        // Update when row number changes
+        headerRowInput.addEventListener('input', () => {
+          updateVariableSelectors();
+        });
+
+        // Update when up/down buttons are clicked
+        const upButton = headerRowInput.parentElement?.querySelector('.spinner-button.up');
+        const downButton = headerRowInput.parentElement?.querySelector('.spinner-button.down');
+        
+        [upButton, downButton].forEach(button => {
+          if (button) {
+            button.addEventListener('click', () => {
+              // Small delay to allow the input value to update
+              setTimeout(() => updateVariableSelectors(), 0);
+            });
+          }
+        });
+      }
+    });
+
+    // Function to insert variable into prompt textarea
+    function insertVariableIntoPrompt(textarea, variable) {
+      const cursorPos = textarea.selectionStart;
+      const textBefore = textarea.value.substring(0, cursorPos);
+      const textAfter = textarea.value.substring(textarea.selectionEnd);
+      
+      // Insert the variable with double curly brackets
+      const insertion = `{{${variable}}}`;
+      textarea.value = textBefore + insertion + textAfter;
+      
+      // Move cursor after the inserted variable
+      const newCursorPos = cursorPos + insertion.length;
+      textarea.setSelectionRange(newCursorPos, newCursorPos);
+      
+      // Focus the textarea
+      textarea.focus();
+    }
+
+    // Initialize state and functions when homepage loads
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initialize state object
+      const state = {
+        startMode: 'auto',
+        startRow: 1,
+        rowCount: 1
+      };
+
+      // Initialize dropdowns immediately
+      updateSheetAndColumnDropdowns();
+      
+      // Add change listeners to sheet selectors
+      const sheetSelects = document.querySelectorAll('select[aria-label*="sheet" i]');
+      sheetSelects.forEach(select => {
+        select.addEventListener('change', (e) => {
+          if (select.getAttribute('aria-label') === 'Select sheet') {
+            updateSheetColumns(e.target.value);
+            updateVariableSelectors(); // Update variables when sheet changes
+          }
+        });
+      });
+
+      // Initialize column name row input
+      const headerRowInput = document.querySelector('input[aria-label="Column name row"]');
+      if (headerRowInput) {
+        // Update when value changes (typing, pasting, etc)
+        headerRowInput.addEventListener('input', () => {
+          updateVariableSelectors();
+        });
+
+        // Update when value changes via keyboard
+        headerRowInput.addEventListener('keyup', () => {
+          updateVariableSelectors();
+        });
+
+        // Update when focus is lost
+        headerRowInput.addEventListener('blur', () => {
+          updateVariableSelectors();
+        });
+
+        // Initialize spinner buttons
+        const upButton = headerRowInput.parentElement?.querySelector('.spinner-button.up');
+        const downButton = headerRowInput.parentElement?.querySelector('.spinner-button.down');
+        
+        if (upButton) {
+          upButton.addEventListener('click', () => {
+            const currentValue = parseInt(headerRowInput.value) || 1;
+            headerRowInput.value = currentValue + 1;
+            updateVariableSelectors();
+          });
+        }
+        
+        if (downButton) {
+          downButton.addEventListener('click', () => {
+            const currentValue = parseInt(headerRowInput.value) || 1;
+            if (currentValue > 1) {
+              headerRowInput.value = currentValue - 1;
+              updateVariableSelectors();
+            }
+          });
+        }
+      }
+
+      // Initialize variable selectors
+      const variableTypeSelect = document.querySelector('select[aria-label="Select variable type"]');
+      const columnLetterSelect = document.querySelector('select[aria-label="Select column letter"]');
+      const promptTextarea = document.querySelector('.prompt-input');
+      
+      if (variableTypeSelect && columnLetterSelect && promptTextarea) {
+        // Handle variable type selection
+        variableTypeSelect.addEventListener('change', (e) => {
+          columnLetterSelect.style.display = e.target.value === '' ? 'none' : 'block';
+          
+          if (e.target.value !== '') {
+            const selectedText = e.target.options[e.target.selectedIndex].text;
+            insertVariableIntoPrompt(promptTextarea, selectedText);
+          }
+        });
+
+        // Handle click on variable type select
+        variableTypeSelect.addEventListener('click', (e) => {
+          const selectedText = e.target.options[e.target.selectedIndex].text;
+          if (selectedText && e.target.value !== '') {
+            insertVariableIntoPrompt(promptTextarea, selectedText);
+          }
+        });
+
+        // Handle column letter selection
+        columnLetterSelect.addEventListener('change', (e) => {
+          if (e.target.value !== '') {
+            insertVariableIntoPrompt(promptTextarea, e.target.value);
+          }
+        });
+
+        // Handle click on column letter select
+        columnLetterSelect.addEventListener('click', (e) => {
+          const selectedText = e.target.value;
+          if (selectedText && selectedText !== '') {
+            insertVariableIntoPrompt(promptTextarea, selectedText);
+          }
+        });
+      }
+
+      // Initialize run button handler
+      const runButton = document.querySelector('.run-button');
+      if (runButton) {
+        runButton.addEventListener('click', function() {
+          const config = {
+            inputSheet: document.querySelector('select[aria-label="Select sheet"]').value,
+            inputColumn: document.querySelector('select[aria-label="Select column"]').value,
+            outputSheet: document.querySelector('select[aria-label="Select output sheet"]').value,
+            outputColumn: document.querySelector('select[aria-label="Select output column"]').value,
+            startRow: state.startRow || 1,
+            rowCount: state.rowCount || 1,
+            prompt: document.querySelector('.prompt-input').value,
+            systemInstructions: document.querySelector('.system-input').value,
+            model: document.querySelector('.model-button').textContent
+          };
+
+          // Disable run button and show loading state
+          this.disabled = true;
+          this.textContent = 'Processing...';
+
+          google.script.run
+            .withSuccessHandler(result => {
+              this.disabled = false;
+              this.textContent = 'Run';
+
+              if (result.success) {
+                showNotification('success', result.message);
+              } else {
+                showNotification('error', result.message || 'An error occurred');
+              }
+            })
+            .withFailureHandler(error => {
+              this.disabled = false;
+              this.textContent = 'Run';
+              showNotification('error', error.message || 'An error occurred');
+            })
+            .processCustomPrompt(config);
+        });
+      }
+
+      // Call updateVariableSelectors initially to populate dropdowns
+      updateVariableSelectors();
+    });
+
+    // Pre-fetch all sheet data at once
+    function getAllSheetData() {
+      // Show loading state
+      const selects = document.querySelectorAll('.select-input');
+      selects.forEach(select => {
+        select.classList.add('loading');
+        select.innerHTML = '<option class="loading-placeholder">Loading...</option>';
+      });
+
+      google.script.run
+        .withSuccessHandler(data => {
+          // Cache all the data
+          cache.sheets = data.sheets.map(sheet => sheet.name);
+          data.sheets.forEach(sheet => {
+            cache.columns[sheet.name] = sheet.columns;
+          });
+
+          // Populate dropdowns with cached data
+          populateSheetDropdowns(cache.sheets);
+          
+          // Remove loading state
+          selects.forEach(select => select.classList.remove('loading'));
+        })
+        .withFailureHandler(error => {
+          console.error('Error getting all sheet data:', error);
+          showNotification('error', 'Failed to load spreadsheet data');
+          
+          // Remove loading state
+          selects.forEach(select => select.classList.remove('loading'));
+        })
+        .getAllSheetData();
+    }
+
+    // Update the initialization to use pre-fetching
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initialize dropdowns with loading state and pre-fetch all data
+      getAllSheetData();
+      
+      // Rest of the initialization code...
+      const variableDropdown = document.getElementById('variableTypeDropdown');
+      const letterDropdown = document.getElementById('columnLetterDropdown');
+      const promptTextarea = document.querySelector('.prompt-input');
+
+      if (variableDropdown && letterDropdown && promptTextarea) {
+        // ... existing dropdown event listeners ...
+      }
+
+      // Add change listeners to sheet selectors
+      const sheetSelects = document.querySelectorAll('select[aria-label*="sheet" i]');
+      sheetSelects.forEach(select => {
+        select.addEventListener('change', (e) => {
+          if (select.getAttribute('aria-label') === 'Select sheet') {
+            // Use cached data
+            const sheetName = e.target.value;
+            if (cache.columns[sheetName]) {
+              populateColumnDropdowns(cache.columns[sheetName]);
+            }
+            updateVariableSelectors(); // Update variables when sheet changes
+          }
+        });
+      });
+
+      // Add refresh button handler
+      const refreshButton = document.createElement('div');
+      refreshButton.className = 'breadcrumb-support-nav-bar-item';
+      refreshButton.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#clip0_967_6393)">
+            <path d="M12.7675 7.87508C12.3453 10.6817 9.92362 12.8334 6.99935 12.8334C3.77769 12.8334 1.16602 10.2217 1.16602 7.00008C1.16602 3.77842 3.77769 1.16675 6.99935 1.16675C9.39139 1.16675 11.4471 2.60653 12.3473 4.66675" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M9.91602 4.66667H12.2327C12.5641 4.66667 12.8327 4.39804 12.8327 4.06667V1.75" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <defs>
+            <clipPath id="clip0_967_6393">
+              <rect width="14" height="14" fill="currentColor"/>
+            </clipPath>
+          </defs>
+        </svg>
+        <a class="breadcrumb-support-nav-bar-item-link">Refresh Data</a>
+      `;
+
+      refreshButton.addEventListener('click', () => {
+        // Clear cache
+        cache.sheets = null;
+        cache.columns = {};
+        cache.headers = {};
+        // Fetch fresh data
+        getAllSheetData();
+      });
+
+      // Insert into the breadcrumb navigation bar
+      const breadcrumbNav = document.querySelector('.breadcrumb-support-nav-bar');
+      if (breadcrumbNav) {
+        breadcrumbNav.appendChild(refreshButton);
+      }
     });
     </script>
   </body>
