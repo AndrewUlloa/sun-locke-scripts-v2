@@ -1736,7 +1736,7 @@
         <div class="model-group">
           <div class="model-label">Image</div>
           <div class="model-selector">
-            <div class="model-button" data-model-type="image">FLUX.1 [dev]</div>
+            <div class="model-button" data-model-type="image">FLUX.1 [schnell]</div>
           </div>
         </div>
       </div>
@@ -2251,14 +2251,26 @@
         </div>
         <div class="nav-title">Custom Prompt</div>
       </div>
-      <div class="model-selectors" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-          <div class="model-group">
-              <div class="model-label">Language</div>
-            <div class="model-selector">
-              <div class="model-button" data-model-type="language">gpt 4o-mini</div>
-            </div>
+      <div class="model-selectors" style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
+        <div class="model-group">
+            <div class="model-label">Language</div>
+          <div class="model-selector">
+            <div class="model-button" data-model-type="language">gpt 4o-mini</div>
           </div>
         </div>
+        <div class="model-group">
+            <div class="model-label">Search</div>
+          <div class="model-selector">
+            <div class="model-button" data-model-type="search">small</div>
+          </div>
+        </div>
+        <div class="model-group">
+            <div class="model-label">Image</div>
+          <div class="model-selector">
+            <div class="model-button" data-model-type="image">FLUX.1 [schnell]</div>
+          </div>
+        </div>
+      </div>
         <div class="breadcrumb-support-nav-bar">
           <div class="breadcrumb-support-nav-bar-item" href="#">
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2552,9 +2564,11 @@
         "large"
       ],
       image: [
+        "FLUX.1 [schnell]",
         "FLUX.1 [dev]",
-        "FLUX.2 [dev]",
-        "FLUX.3 [dev]"
+        "FLUX.1 [pro] new",
+        "FLUX1.1 [pro]",
+        "FLUX1.1 [pro] ultra"
       ]
     };
 
