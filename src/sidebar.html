@@ -596,7 +596,8 @@
       .form-inner-container .select-input:last-of-type {
         flex: 0 1 auto;
         width: auto;
-        min-width: 60px; /* Minimum width to ensure readability */
+        min-width: 40px; /* Minimum width to ensure readability */
+        max-width: 44px;
       }
 
       /* Common select styles */
@@ -1270,6 +1271,8 @@
 
         .form-label.small {
           font-size: 12px;
+          background: none;
+          border: none;
       }
 
       .fixed-content {
@@ -1597,7 +1600,6 @@
 
       /* Variable type dropdown specific styles */
       #variableTypeDropdown {
-        max-width: 50px;
         min-width: 50px;
       }
 
@@ -1610,8 +1612,7 @@
 
       /* Letter dropdown specific styles */
       #columnLetterDropdown {
-        min-width: 60px;
-        width: 60px;
+        min-width: 44px;
       }
     </style>
 
@@ -1658,23 +1659,6 @@
           });
         });
 
-        // Add refresh button handler
-        const refreshButton = document.createElement('div');
-        refreshButton.className = 'breadcrumb-support-nav-bar-item';
-        refreshButton.innerHTML = `
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g clip-path="url(#clip0_967_6393)">
-              <path d="M12.7675 7.87508C12.3453 10.6817 9.92362 12.8334 6.99935 12.8334C3.77769 12.8334 1.16602 10.2217 1.16602 7.00008C1.16602 3.77842 3.77769 1.16675 6.99935 1.16675C9.39139 1.16675 11.4471 2.60653 12.3473 4.66675" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M9.91602 4.66667H12.2327C12.5641 4.66667 12.8327 4.39804 12.8327 4.06667V1.75" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-            </g>
-            <defs>
-              <clipPath id="clip0_967_6393">
-                <rect width="14" height="14" fill="currentColor"/>
-              </clipPath>
-            </defs>
-          </svg>
-          <a class="breadcrumb-support-nav-bar-item-link">Refresh Data</a>
-        `;
 
         refreshButton.addEventListener('click', () => {
           // Clear cache
@@ -1689,6 +1673,40 @@
         const breadcrumbNav = document.querySelector('.breadcrumb-support-nav-bar');
         if (breadcrumbNav) {
           breadcrumbNav.appendChild(refreshButton);
+        }
+
+        // Add prompt input listener for "search the web" detection
+        const promptInput = document.querySelector('.prompt-input');
+        if (promptInput) {
+          let wasSearchMode = false; // Track if we were in search mode
+          
+          promptInput.addEventListener('input', (e) => {
+            const text = e.target.value.toLowerCase();
+            const shouldUseSearch = text.includes('search the web');
+            
+            // Only switch models if the state changes
+            if (shouldUseSearch !== wasSearchMode) {
+              wasSearchMode = shouldUseSearch;
+              
+              // Get all model buttons
+              const buttons = document.querySelectorAll('.model-button[data-model-type]');
+              buttons.forEach(button => {
+                const type = shouldUseSearch ? 'search' : 'language';
+                if (button.dataset.modelType === type) {
+                  // Get the first model option of the appropriate type
+                  const options = MODEL_OPTIONS[type];
+                  const [displayName, value] = Object.entries(options)[0];
+                  button.textContent = displayName;
+                  button.dataset.value = value;
+                  console.log(`Switched to ${type} model:`, {
+                    displayName,
+                    value,
+                    modelType: type
+                  });
+                }
+              });
+            }
+          });
         }
       });
     </script>
@@ -1722,21 +1740,21 @@
         <div class="model-group">
           <div class="model-label">Language</div>
           <div class="model-selector">
-            <div class="model-button" data-model-type="language">gpt 4o-mini</div>
+            <div class="model-button" data-model-type="language"></div>
           </div>
         </div>
 
         <div class="model-group">
           <div class="model-label">Search</div>
           <div class="model-selector">
-            <div class="model-button" data-model-type="search">small</div>
+            <div class="model-button" data-model-type="search"></div>
           </div>
         </div>
 
         <div class="model-group">
           <div class="model-label">Image</div>
           <div class="model-selector">
-            <div class="model-button" data-model-type="image">FLUX.1 [schnell]</div>
+            <div class="model-button" data-model-type="image"></div>
           </div>
         </div>
       </div>
@@ -2255,19 +2273,19 @@
         <div class="model-group">
             <div class="model-label">Language</div>
           <div class="model-selector">
-            <div class="model-button" data-model-type="language">gpt 4o-mini</div>
+            <div class="model-button" data-model-type="language"></div>
           </div>
         </div>
         <div class="model-group">
             <div class="model-label">Search</div>
           <div class="model-selector">
-            <div class="model-button" data-model-type="search">small</div>
+            <div class="model-button" data-model-type="search"></div>
           </div>
         </div>
         <div class="model-group">
             <div class="model-label">Image</div>
           <div class="model-selector">
-            <div class="model-button" data-model-type="image">FLUX.1 [schnell]</div>
+            <div class="model-button" data-model-type="image"></div>
           </div>
         </div>
       </div>
@@ -2445,14 +2463,14 @@
                                     <button id="autoStartButton" class="action-panel-button form-label small active">Auto</button>
                                 </div>
                                 <div id="fixedStartSection" class="column-name-row-input">
-                                    <label class="form-label small" onclick="toggleStartRow('fixed')">Fixed</label>
+                                    <button id="fixedStartButton" class="form-label small">Fixed</button>
                                     <div class="input-group">
                                         <div class="number-input-container small">
                                             <input type="number" id="startRowInput" value="1" min="1" class="number-input form-label small" disabled 
                                                    aria-label="Fixed start row number" title="Fixed start row number">
                                             <div class="spinner-controls">
-                                                <button class="spinner-button up" onclick="incrementStartRow()" aria-label="Increase start row"><svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.5L5 1.5L9 5.5" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-                                                <button class="spinner-button down" onclick="decrementStartRow()" aria-label="Decrease start row"><svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L5 5.5L9 1.5" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                                                <button class="spinner-button up" id="startRowUpButton" aria-label="Increase start row"><svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.5L5 1.5L9 5.5" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                                                <button class="spinner-button down" id="startRowDownButton" aria-label="Decrease start row"><svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L5 5.5L9 1.5" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
                                             </div>
                                         </div>
                                     </div>
@@ -2493,7 +2511,7 @@
                     </div>
                 </div>
 
-                  <button class="run-button">
+                  <button id="runButton" class="run-button">
                       <span id="runButtonText">Run 3 rows</span>
                       <div class="button-icons">
                           <span class="info-button">
@@ -2551,26 +2569,38 @@
 
     <script>
     const MODEL_OPTIONS = {
-      language: [
-        "gpt 4o-mini",
-        "gpt 4o",
-        "DeepSeek-V3",
-        "gpt o1-mini",
-        "gpt o1",
-      ],
-      search: [
-        "small",
-        "medium",
-        "large"
-      ],
-      image: [
-        "FLUX.1 [schnell]",
-        "FLUX.1 [dev]",
-        "FLUX.1 [pro] new",
-        "FLUX1.1 [pro]",
-        "FLUX1.1 [pro] ultra"
-      ]
+      language: {
+        "GPT-4o mini": "gpt-4o-mini",
+        "GPT-4o": "gpt-4o",
+        "DeepSeek v3": "DeepSeek-V3",
+        "o1 mini": "o1-mini",
+        "o1 preview": "o1-preview"
+      },
+      search: {
+        "Small": "llama-3.1-sonar-small-128k-online",
+        "Medium": "llama-3.1-sonar-large-128k-online",
+        "Large": "llama-3.1-sonar-huge-128k-online"
+      },
+      image: {
+        "FLUX Schnell": "FLUX.1 [schnell]",
+        "FLUX Dev": "FLUX.1 [dev]",
+        "FLUX Pro": "FLUX.1 [pro] new",
+        "FLUX Pro 1.1": "FLUX1.1 [pro]",
+        "FLUX Pro Ultra": "FLUX1.1 [pro] ultra"
+      }
     };
+
+    // Initialize model buttons with first option from each type
+    function initializeModelButtons() {
+      Object.entries(MODEL_OPTIONS).forEach(([type, options]) => {
+        const [firstDisplayName, firstValue] = Object.entries(options)[0];
+        const buttons = document.querySelectorAll(`[data-model-type="${type}"]`);
+        buttons.forEach(button => {
+          button.textContent = firstDisplayName;
+          button.dataset.value = firstValue; // Set the internal value
+        });
+      });
+    }
 
     let activeModelType = null;
     const overlay = document.querySelector('.modal-overlay');
@@ -2580,6 +2610,47 @@
     const customPromptButton = document.querySelector('.custom-prompt-section .tool-item');
     const mainPage = document.querySelector('.container:not(.custom-prompt-page)');
     const customPromptPage = document.querySelector('.custom-prompt-page');
+
+    // Initialize when document loads
+    document.addEventListener('DOMContentLoaded', () => {
+      initializeModelButtons();
+      
+      // Add prompt input listener for "search the web" detection
+      const promptInput = document.querySelector('.prompt-input');
+      if (promptInput) {
+        let wasSearchMode = false; // Track if we were in search mode
+        
+        promptInput.addEventListener('input', (e) => {
+          const text = e.target.value.toLowerCase();
+          const shouldUseSearch = text.includes('search the web');
+          
+          // Only switch models if the state changes
+          if (shouldUseSearch !== wasSearchMode) {
+            wasSearchMode = shouldUseSearch;
+            
+            // Get all model buttons
+            const buttons = document.querySelectorAll('.model-button[data-model-type]');
+            buttons.forEach(button => {
+              const type = shouldUseSearch ? 'search' : 'language';
+              if (button.dataset.modelType === type) {
+                // Get the first model option of the appropriate type
+                const options = MODEL_OPTIONS[type];
+                const [displayName, value] = Object.entries(options)[0];
+                button.textContent = displayName;
+                button.dataset.value = value;
+                console.log(`Switched to ${type} model:`, {
+                  displayName,
+                  value,
+                  modelType: type
+                });
+              }
+            });
+          }
+        });
+      }
+      
+      // ... rest of your initialization code ...
+    });
 
     function showModal(modelType, currentValue) {
       console.log(`Opening model selection modal for ${modelType} type with current value: ${currentValue}`);
@@ -2591,18 +2662,18 @@
       modelOptionsContainer.innerHTML = '';
       
       // Add new options
-      MODEL_OPTIONS[modelType].forEach(option => {
+      Object.entries(MODEL_OPTIONS[modelType]).forEach(([displayName, value]) => {
         const div = document.createElement('div');
-        div.className = `model-option ${option === currentValue ? 'selected' : ''}`;
+        div.className = `model-option ${value === currentValue ? 'selected' : ''}`;
         div.innerHTML = `
-          <span class="model-option-text">${option}</span>
+          <span class="model-option-text">${displayName}</span>
           <svg class="model-option-check" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         `;
         div.addEventListener('click', () => {
-          console.log(`Selected model option: ${option}`);
-          selectModel(option);
+          console.log(`Selected model option: ${value}`);
+          selectModel(value);
         });
         modelOptionsContainer.appendChild(div);
       });
@@ -2624,10 +2695,20 @@
 
     function selectModel(value) {
       console.log(`Updating all ${activeModelType} model buttons to value: ${value}`);
-      // Update all buttons with the same model type
+      // Find the display name for this value
+      const options = MODEL_OPTIONS[activeModelType];
+      const displayName = Object.entries(options).find(([_, val]) => val === value)?.[0];
+      
+      if (!displayName) {
+        console.error(`Could not find display name for value: ${value}`);
+        return;
+      }
+
+      // Update all buttons with the same model type to show the display name
       const buttons = document.querySelectorAll(`[data-model-type="${activeModelType}"]`);
       buttons.forEach(button => {
-        button.textContent = value;
+        button.textContent = displayName;
+        button.dataset.value = value; // Store the actual value as a data attribute
       });
       hideModal();
     }
@@ -2661,8 +2742,8 @@
         console.log('Command+Return shortcut detected - triggering run button');
         e.preventDefault();
         const runButton = document.querySelector('.run-button');
-        if (runButton) {
-          runButton.click();
+        if (runButton && typeof handleRunButtonClick === 'function') {
+          handleRunButtonClick();
           
           // Quick hover fade in
           runButton.style.transitionDuration = '100ms';
@@ -4176,7 +4257,10 @@
             const value = parseInt(this.value);
             if (this.value && value >= 1) {
               state.rowCount = value;
-              updateRunButtonText();
+              const runButtonText = document.getElementById('runButtonText');
+              if (runButtonText) {
+                updateRunButtonText();
+              }
             }
           }
         });
@@ -4190,7 +4274,7 @@
       startRowInput.addEventListener('input', function() {
         const value = parseInt(this.value);
         if (this.value && value >= 1) {
-          state.startRow = value;
+          window.appState.startRow = value;
         }
       });
 
@@ -4225,65 +4309,166 @@
     // Update run button text
     function updateRunButtonText() {
       const text = state.rowMode === 'all' ? 'Run all rows' : `Run ${state.rowCount} rows`;
-      document.getElementById('runButtonText').textContent = text;
-    }
-
-    // Handle row count changes
-    function incrementRowCount() {
-      const input = document.getElementById('rowCountInput');
-      const value = parseInt(input.value) + 1;
-      if (value >= 1) {
-        input.value = value;
-        state.rowCount = value;
-        updateRunButtonText();
+      const runButtonText = document.getElementById('runButtonText');
+      if (runButtonText) {
+        runButtonText.textContent = text;
       }
     }
 
-    function decrementRowCount() {
-      const input = document.getElementById('rowCountInput');
-      const value = parseInt(input.value) - 1;
-      if (value >= 1) {
-        input.value = value;
-        state.rowCount = value;
-        updateRunButtonText();
-      }
-    }
-
-    // Toggle between fixed and all rows
-    function toggleAllRows() {
-      const button = document.getElementById('allRowsButton');
-      const input = document.getElementById('rowCountInput');
-      const inputContainer = input.closest('.column-name-row-input');
+    // Update run button state
+    function updateRunButtonState(isProcessing, originalText) {
+      const runButton = document.getElementById('runButton');
+      const runButtonText = document.getElementById('runButtonText');
+      const buttonIcons = runButton?.querySelector('.button-icons');
       
-      if (state.rowMode === 'fixed') {
-        state.rowMode = 'all';
-        button.classList.add('active');
-        input.disabled = true;
-        inputContainer.style.opacity = '0.5';
+      if (!runButton || !runButtonText) return;
+
+      if (isProcessing) {
+        runButtonText.textContent = 'Processing...';
+        runButton.disabled = true;
+        if (buttonIcons) buttonIcons.style.visibility = 'hidden';
       } else {
-        state.rowMode = 'fixed';
-        button.classList.remove('active');
-        input.disabled = false;
-        inputContainer.style.opacity = '1';
-        input.focus();
+        // Make sure we have a valid text to restore
+        const textToShow = originalText || (state.rowMode === 'all' ? 'Run all rows' : `Run ${state.rowCount || 1} rows`);
+        runButtonText.textContent = textToShow;
+        runButton.disabled = false;
+        if (buttonIcons) buttonIcons.style.visibility = 'visible';
       }
-      updateRunButtonText();
     }
 
-    // Initialize event listeners
+    // Define the run button click handler function
+    function handleRunButtonClick() {
+      const runButton = document.getElementById('runButton');
+      const runButtonText = document.getElementById('runButtonText');
+      if (!runButton || !runButtonText) return;
+      
+      console.log('Run button clicked'); // Debug log
+      
+      const modelButton = document.querySelector('.model-button[data-model-type="language"]');
+      const inputSheetSelect = document.querySelector('select[aria-label="Select sheet"]');
+      const inputColumnSelect = document.querySelector('select[aria-label="Select column"]');
+      const outputSheetSelect = document.querySelector('select[aria-label="Select output sheet"]');
+      const outputColumnSelect = document.querySelector('select[aria-label="Select output column"]');
+      const promptInput = document.querySelector('.prompt-input');
+      const systemInput = document.querySelector('.system-input');
+      const rowCountInput = document.getElementById('rowCountInput');
+      const allRowsButton = document.getElementById('allRowsButton');
+
+      // Determine row mode and count
+      let rowMode = 'fixed';
+      let rowCount = 1;
+
+      if (allRowsButton?.classList.contains('active')) {
+        rowMode = 'all';
+      } else {
+        const rowCountValue = parseInt(rowCountInput?.value || '1');
+        if (rowCountValue === 3) {
+          rowMode = '3rows';
+        } else {
+          rowMode = 'fixed';
+          rowCount = rowCountValue;
+        }
+      }
+
+      window.appState.rowMode = rowMode;
+      window.appState.rowCount = rowCount;
+
+      console.log('Row settings:', {
+        rowMode,
+        rowCount,
+        inputValue: rowCountInput?.value,
+        allRowsActive: allRowsButton?.classList.contains('active')
+      });
+
+      const config = {
+        modelType: modelButton?.dataset.modelType,
+        inputSheet: inputSheetSelect?.value,
+        inputColumn: inputColumnSelect?.value,
+        outputSheet: outputSheetSelect?.value,
+        outputColumn: outputColumnSelect?.value,
+        startRow: window.appState.startRow || 1,
+        rowMode: rowMode,
+        rowCount: rowCount,
+        prompt: promptInput?.value,
+        systemInstructions: systemInput?.value || '',
+        model: modelButton?.dataset.value || modelButton?.textContent.trim()
+      };
+
+      console.log('Config object:', config); // Debug log
+
+      // Validate required fields
+      if (!config.inputSheet || !config.inputColumn || !config.outputSheet || !config.outputColumn || !config.prompt) {
+        console.log('Validation failed:', {
+          hasInputSheet: !!config.inputSheet,
+          hasInputColumn: !!config.inputColumn,
+          hasOutputSheet: !!config.outputSheet,
+          hasOutputColumn: !!config.outputColumn,
+          hasPrompt: !!config.prompt
+        });
+        showNotification('error', 'Please fill in all required fields');
+        return;
+      }
+
+      // Store the original button text before processing
+      const originalText = runButtonText.textContent;
+      console.log('Original button text:', originalText); // Debug log
+      
+      // Update button state to processing
+      updateRunButtonState(true);
+
+      console.log('Making API call with config:', config); // Debug log
+
+      google.script.run
+        .withSuccessHandler(result => {
+          console.log('API call success:', result); // Debug log
+          // Reset button state with original text
+          updateRunButtonState(false, originalText);
+
+          if (result.success) {
+            showNotification('success', result.message);
+          } else {
+            showNotification('error', result.message || 'An error occurred');
+          }
+        })
+        .withFailureHandler(error => {
+          console.log('API call failed:', error); // Debug log
+          // Reset button state with original text
+          updateRunButtonState(false, originalText);
+          showNotification('error', error.message || 'An error occurred');
+        })
+        .processCustomPrompt(config);
+    }
+
+    // Initialize all event listeners
     document.addEventListener('DOMContentLoaded', function() {
       // Add keydown handler to all number inputs
       document.querySelectorAll('.number-input').forEach(input => {
         input.addEventListener('keydown', handleNumberInputKeydown);
       });
 
-      const startRowInput = document.getElementById('startRowInput');
-      const rowCountInput = document.getElementById('rowCountInput');
+      const columnNameRowInput = document.querySelector('input[aria-label="Column name row"]');
       const runButton = document.getElementById('runButton');
+      const rowCountInput = document.getElementById('rowCountInput');
 
-      // Handle row count input changes (only for typing and paste)
-      rowCountInput.addEventListener('input', function(e) {
-        // Ignore input events from arrow keys since we handle those in keydown
+      if (columnNameRowInput) {
+        // Initialize state with default value
+        state.columnNameRow = parseInt(columnNameRowInput.value) || 1;
+        updateStartRow(state.columnNameRow);
+
+        // Handle direct input changes
+        columnNameRowInput.addEventListener('input', function(e) {
+          if (!e.isComposing && e.inputType !== 'deleteContentBackward' && e.inputType !== 'deleteContentForward') {
+            const value = parseInt(this.value);
+            if (this.value && value >= 1) {
+              state.columnNameRow = value;
+              updateStartRow(value);
+            }
+          }
+        });
+      }
+
+      // Handle row count input changes
+      rowCountInput?.addEventListener('input', function(e) {
         if (!e.isComposing && e.inputType !== 'deleteContentBackward' && e.inputType !== 'deleteContentForward') {
           const value = parseInt(this.value);
           if (this.value && value >= 1) {
@@ -4293,47 +4478,11 @@
         }
       });
 
-      // Handle start row input changes
-      startRowInput.addEventListener('input', function() {
-        const value = parseInt(this.value);
-        if (this.value && value >= 1) {
-          state.startRow = value;
-        }
-      });
-
-      // Handle run button click
-      runButton.addEventListener('click', function() {
-        // Here you would call your Google Apps Script function
-        console.log('Running script with state:', state);
-      });
-    });
-
-    // Handle keyboard input for all number inputs except row count
-    function handleNumberInputKeydown(e) {
-      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-        e.preventDefault();
-        const input = e.target;
-        const currentValue = parseInt(input.value) || 0;
-        let newValue = currentValue;
-        
-        if (e.key === 'ArrowUp') {
-          newValue = currentValue + 1;
-        } else {
-          newValue = Math.max(1, currentValue - 1);
-        }
-
-        if (newValue >= 1) {
-          input.value = newValue;
-          // Only update state and run button for rowCountInput
-          if (input.id === 'rowCountInput') {
-            state.rowCount = newValue;
-            updateRunButtonText();
-          } else if (input.id === 'startRowInput') {
-            state.startRow = newValue;
-          }
-        }
+      // Add run button click handler
+      if (runButton) {
+        runButton.addEventListener('click', handleRunButtonClick);
       }
-    }
+    });
 
     // Add these functions to your existing script section
     function incrementStartRow() {
@@ -4341,7 +4490,7 @@
       const value = parseInt(input.value) + 1;
       if (value >= 1) {
         input.value = value;
-        state.startRow = value;
+        window.appState.startRow = value;
       }
     }
 
@@ -4350,7 +4499,7 @@
       const value = parseInt(input.value) - 1;
       if (value >= 1) {
         input.value = value;
-        state.startRow = value;
+        window.appState.startRow = value;
       }
     }
 
@@ -4371,24 +4520,25 @@
       const input = document.getElementById('startRowInput');
       const inputContainer = input.closest('.column-name-row-input');
       
-      if (state.startMode === 'auto') {
+      if (window.appState.startMode === 'auto') {
         // Switching to fixed mode
-        state.startMode = 'fixed';
+        window.appState.startMode = 'fixed';
         fixedButton.classList.add('active');
         autoButton.classList.remove('active');
         input.disabled = false;
         inputContainer.style.opacity = '1';
         input.focus();
-        state.startRow = parseInt(input.value) || 1;
+        window.appState.startRow = parseInt(input.value) || 2; // Default to 2 in fixed mode
       } else {
         // Switching to auto mode
-        state.startMode = 'auto';
+        window.appState.startMode = 'auto';
         autoButton.classList.add('active');
         fixedButton.classList.remove('active');
         input.disabled = true;
         inputContainer.style.opacity = '0.5';
-        state.startRow = null;
+        window.appState.startRow = 1; // Reset to 1 in auto mode
       }
+      console.log('Start mode toggled:', window.appState);
     }
 
     // Add to your DOMContentLoaded event listener
@@ -4762,49 +4912,6 @@
       console.log(`${type}: ${message}`);
     }
 
-    // Handle run button click
-    document.getElementById('runButton').addEventListener('click', function() {
-      const config = {
-        inputSheet: document.querySelector('select[aria-label="Select sheet"]').value,
-        inputColumn: document.querySelector('select[aria-label="Select column"]').value,
-        outputSheet: document.querySelector('select[aria-label="Select output sheet"]').value,
-        outputColumn: document.querySelector('select[aria-label="Select output column"]').value,
-        startRow: state.startRow || 1,
-        rowCount: state.rowCount || 1,
-        prompt: document.querySelector('.prompt-input').value,
-        systemInstructions: document.querySelector('.system-input').value,
-        model: document.querySelector('.model-button').textContent
-      };
-
-      // Disable run button and show loading state
-      this.disabled = true;
-      this.textContent = 'Processing...';
-
-      google.script.run
-        .withSuccessHandler(result => {
-          // Re-enable run button
-          this.disabled = false;
-          this.textContent = 'Run';
-
-          if (result.success) {
-            // Show success message
-            showNotification('success', result.message);
-          } else {
-            // Show error message
-            showNotification('error', result.message || 'An error occurred');
-          }
-        })
-        .withFailureHandler(error => {
-          // Re-enable run button
-          this.disabled = false;
-          this.textContent = 'Run';
-          
-          // Show error message
-          showNotification('error', error.message || 'An error occurred');
-        })
-        .processCustomPrompt(config);
-    });
-
     // Initialize dropdowns when page loads
     document.addEventListener('DOMContentLoaded', () => {
       updateSheetAndColumnDropdowns();
@@ -4857,9 +4964,10 @@
     // Initialize state and functions when homepage loads
     document.addEventListener('DOMContentLoaded', () => {
       // Initialize state object
-      const state = {
+      window.appState = window.appState || {
         startMode: 'auto',
         startRow: 1,
+        rowMode: 'fixed',
         rowCount: 1
       };
 
@@ -4960,28 +5068,74 @@
 
       // Initialize run button handler
       const runButton = document.querySelector('.run-button');
+      console.log('Run button found:', !!runButton); // Debug log
+
       if (runButton) {
         runButton.addEventListener('click', function() {
+          console.log('Run button clicked'); // Debug log
+          
+          const modelButton = document.querySelector('.model-button[data-model-type="language"]');
+          const inputSheetSelect = document.querySelector('select[aria-label="Select sheet"]');
+          const inputColumnSelect = document.querySelector('select[aria-label="Select column"]');
+          const outputSheetSelect = document.querySelector('select[aria-label="Select output sheet"]');
+          const outputColumnSelect = document.querySelector('select[aria-label="Select output column"]');
+          const promptInput = document.querySelector('.prompt-input');
+          const systemInput = document.querySelector('.system-input');
+
+          console.log('Form elements found:', { // Debug log
+            modelButton: !!modelButton,
+            inputSheetSelect: !!inputSheetSelect,
+            inputColumnSelect: !!inputColumnSelect,
+            outputSheetSelect: !!outputSheetSelect,
+            outputColumnSelect: !!outputColumnSelect,
+            promptInput: !!promptInput,
+            systemInput: !!systemInput
+          });
+
           const config = {
-            inputSheet: document.querySelector('select[aria-label="Select sheet"]').value,
-            inputColumn: document.querySelector('select[aria-label="Select column"]').value,
-            outputSheet: document.querySelector('select[aria-label="Select output sheet"]').value,
-            outputColumn: document.querySelector('select[aria-label="Select output column"]').value,
+            modelType: modelButton?.dataset.modelType,
+            inputSheet: inputSheetSelect?.value,
+            inputColumn: inputColumnSelect?.value,
+            outputSheet: outputSheetSelect?.value,
+            outputColumn: outputColumnSelect?.value,
             startRow: state.startRow || 1,
             rowCount: state.rowCount || 1,
-            prompt: document.querySelector('.prompt-input').value,
-            systemInstructions: document.querySelector('.system-input').value,
-            model: document.querySelector('.model-button').textContent
+            prompt: promptInput?.value,
+            systemInstructions: systemInput?.value || '',
+            model: modelButton?.dataset.value || modelButton?.textContent.trim()
           };
 
-          // Disable run button and show loading state
+          console.log('Config object:', config); // Debug log
+
+          // Validate required fields
+          if (!config.inputSheet || !config.inputColumn || !config.outputSheet || !config.outputColumn || !config.prompt) {
+            console.log('Validation failed:', { // Debug log
+              hasInputSheet: !!config.inputSheet,
+              hasInputColumn: !!config.inputColumn,
+              hasOutputSheet: !!config.outputSheet,
+              hasOutputColumn: !!config.outputColumn,
+              hasPrompt: !!config.prompt
+            });
+            showNotification('error', 'Please fill in all required fields');
+            return;
+          }
+
+          // Update button state
+          const runButtonText = document.getElementById('runButtonText');
+          console.log('Run button text element found:', !!runButtonText); // Debug log
+          
+          const originalText = runButtonText?.textContent;
+          if (runButtonText) runButtonText.textContent = 'Processing...';
           this.disabled = true;
-          this.textContent = 'Processing...';
+
+          console.log('Making API call with config:', config); // Debug log
 
           google.script.run
             .withSuccessHandler(result => {
+              console.log('API call success:', result); // Debug log
+              // Reset button state
+              if (runButtonText) runButtonText.textContent = originalText;
               this.disabled = false;
-              this.textContent = 'Run';
 
               if (result.success) {
                 showNotification('success', result.message);
@@ -4990,8 +5144,10 @@
               }
             })
             .withFailureHandler(error => {
+              console.log('API call failed:', error); // Debug log
+              // Reset button state
+              if (runButtonText) runButtonText.textContent = originalText;
               this.disabled = false;
-              this.textContent = 'Run';
               showNotification('error', error.message || 'An error occurred');
             })
             .processCustomPrompt(config);
@@ -5095,6 +5251,347 @@
       const breadcrumbNav = document.querySelector('.breadcrumb-support-nav-bar');
       if (breadcrumbNav) {
         breadcrumbNav.appendChild(refreshButton);
+      }
+    });
+
+    // ... existing code ...
+    // Update the initialization to handle start mode buttons
+    document.addEventListener('DOMContentLoaded', () => {
+      const fixedButton = document.getElementById('fixedStartButton');
+      const autoButton = document.getElementById('autoStartButton');
+      const startRowInput = document.getElementById('startRowInput');
+      
+      if (fixedButton && autoButton && startRowInput) {
+        // Set initial state
+        autoButton.classList.add('active');
+        startRowInput.disabled = true;
+        
+        // Add click handlers for both buttons
+        fixedButton.addEventListener('click', () => {
+          if (state.startMode === 'auto') {
+            state.startMode = 'fixed';
+            fixedButton.classList.add('active');
+            autoButton.classList.remove('active');
+            startRowInput.disabled = false;
+            startRowInput.focus();
+          }
+        });
+        
+        autoButton.addEventListener('click', () => {
+          if (state.startMode === 'fixed') {
+            state.startMode = 'auto';
+            autoButton.classList.add('active');
+            fixedButton.classList.remove('active');
+            startRowInput.disabled = true;
+          }
+        });
+      }
+    });
+    // ... existing code ...
+
+    // Handle row count changes
+    function incrementRowCount() {
+      const input = document.getElementById('rowCountInput');
+      const value = parseInt(input.value) + 1;
+      if (value >= 1) {
+        input.value = value;
+        state.rowCount = value;
+        updateRunButtonText();
+      }
+    }
+
+    function decrementRowCount() {
+      const input = document.getElementById('rowCountInput');
+      const value = parseInt(input.value) - 1;
+      if (value >= 1) {
+        input.value = value;
+        state.rowCount = value;
+        updateRunButtonText();
+      }
+    }
+
+    // Toggle between fixed and all rows
+    function toggleAllRows() {
+      const button = document.getElementById('allRowsButton');
+      const input = document.getElementById('rowCountInput');
+      const inputContainer = input.closest('.column-name-row-input');
+      
+      if (state.rowMode === 'fixed') {
+        state.rowMode = 'all';
+        button.classList.add('active');
+        input.disabled = true;
+        inputContainer.style.opacity = '0.5';
+      } else {
+        state.rowMode = 'fixed';
+        button.classList.remove('active');
+        input.disabled = false;
+        inputContainer.style.opacity = '1';
+        input.focus();
+      }
+      updateRunButtonText();
+    }
+
+    // Handle keyboard input for all number inputs except row count
+    function handleNumberInputKeydown(e) {
+      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        const input = e.target;
+        const currentValue = parseInt(input.value) || 0;
+        let newValue = currentValue;
+
+        if (e.key === 'ArrowUp') {
+          newValue = currentValue + 1;
+        } else {
+          newValue = Math.max(1, currentValue - 1);
+        }
+
+        if (newValue >= 1) {
+          input.value = newValue;
+          // Update state based on which input changed
+          if (input.id === 'rowCountInput') {
+            state.rowCount = newValue;
+            updateRunButtonText();
+          } else if (input.id === 'startRowInput') {
+            state.startRow = newValue;
+          } else if (input.getAttribute('aria-label') === 'Column name row') {
+            state.columnNameRow = newValue;
+            updateStartRow(newValue);
+          }
+        }
+      }
+    }
+
+    // Function to update start row based on column name row
+    function updateStartRow(columnNameRowValue) {
+      const startRowInput = document.getElementById('startRowInput');
+      if (startRowInput) {
+        const newStartRow = columnNameRowValue + 1;
+        startRowInput.value = newStartRow;
+        state.startRow = newStartRow;
+      }
+    }
+
+    // ... existing code ...
+    // Handle fixed mode toggle
+    function handleFixedModeToggle() {
+      const fixedStartSection = document.getElementById('fixedStartSection');
+      const autoStartSection = document.getElementById('autoStartSection');
+      const startRowInput = document.getElementById('startRowInput');
+      
+      if (!fixedStartSection || !autoStartSection || !startRowInput) return;
+      
+      // Toggle active states
+      fixedStartSection.classList.toggle('active');
+      autoStartSection.classList.toggle('active');
+      
+      // Update state based on which mode is active
+      if (fixedStartSection.classList.contains('active')) {
+        window.appState.startMode = 'fixed';
+        window.appState.startRow = parseInt(startRowInput.value) || 2; // Default to 2 if no value
+        console.log('Fixed mode activated, startRow set to:', window.appState.startRow);
+      } else {
+        window.appState.startMode = 'auto';
+        window.appState.startRow = 1; // Reset to 1 in auto mode
+        console.log('Auto mode activated, startRow reset to:', window.appState.startRow);
+      }
+    }
+
+    // Handle start row input change
+    function handleStartRowChange(event) {
+      const value = parseInt(event.target.value) || 2; // Default to 2 if invalid
+      window.appState.startRow = value;
+      console.log('Start row updated to:', window.appState.startRow);
+    }
+
+    // Initialize or get existing state object
+    if (!window.state) {
+      window.state = {
+        startMode: 'auto',
+        startRow: 1,
+        rowMode: 'fixed',
+        rowCount: 1
+      };
+    }
+    window.appState = window.state;
+
+    // Initialize UI state on load
+    document.addEventListener('DOMContentLoaded', function() {
+      const fixedStartSection = document.getElementById('fixedStartSection');
+      const autoStartSection = document.getElementById('autoStartSection');
+      const startRowInput = document.getElementById('startRowInput');
+      
+      if (fixedStartSection && autoStartSection && startRowInput) {
+        // Set initial state based on UI
+        if (fixedStartSection.classList.contains('active')) {
+          window.appState.startMode = 'fixed';
+          window.appState.startRow = parseInt(startRowInput.value) || 2;
+        } else {
+          window.appState.startMode = 'auto';
+          window.appState.startRow = 1;
+        }
+        
+        console.log('Initial state:', window.appState);
+      }
+    });
+    // ... existing code ...
+
+    // Initialize global state if it doesn't exist
+    window.appState = window.appState || {
+      startMode: 'auto',
+      startRow: 1,
+      rowMode: 'fixed',
+      rowCount: 1
+    };
+
+    // Update run button state
+    function updateRunButtonState(isProcessing, originalText) {
+      const runButton = document.getElementById('runButton');
+      const runButtonText = document.getElementById('runButtonText');
+      const buttonIcons = runButton?.querySelector('.button-icons');
+      
+      if (!runButton || !runButtonText) return;
+
+      if (isProcessing) {
+        runButtonText.textContent = 'Processing...';
+        runButton.disabled = true;
+        if (buttonIcons) buttonIcons.style.visibility = 'hidden';
+      } else {
+        // Make sure we have a valid text to restore
+        const textToShow = originalText || (window.appState.rowMode === 'all' ? 'Run all rows' : `Run ${window.appState.rowCount || 1} rows`);
+        runButtonText.textContent = textToShow;
+        runButton.disabled = false;
+        if (buttonIcons) buttonIcons.style.visibility = 'visible';
+      }
+    }
+
+    // Handle fixed mode toggle
+    function handleFixedModeToggle() {
+      const fixedStartSection = document.getElementById('fixedStartSection');
+      const autoStartSection = document.getElementById('autoStartSection');
+      const startRowInput = document.getElementById('startRowInput');
+      
+      if (!fixedStartSection || !autoStartSection || !startRowInput) return;
+      
+      // Toggle active states
+      fixedStartSection.classList.toggle('active');
+      autoStartSection.classList.toggle('active');
+      
+      // Update state based on which mode is active
+      if (fixedStartSection.classList.contains('active')) {
+        window.appState.startMode = 'fixed';
+        window.appState.startRow = parseInt(startRowInput.value) || 2; // Default to 2 if no value
+        console.log('Fixed mode activated, startRow set to:', window.appState.startRow);
+      } else {
+        window.appState.startMode = 'auto';
+        window.appState.startRow = 1; // Reset to 1 in auto mode
+        console.log('Auto mode activated, startRow reset to:', window.appState.startRow);
+      }
+    }
+
+    // Handle start row input change
+    function handleStartRowChange(event) {
+      const value = parseInt(event.target.value) || 2; // Default to 2 if invalid
+      window.appState.startRow = value;
+      console.log('Start row updated to:', window.appState.startRow);
+    }
+
+    // Initialize UI state on load
+    document.addEventListener('DOMContentLoaded', function() {
+      const fixedStartSection = document.getElementById('fixedStartSection');
+      const autoStartSection = document.getElementById('autoStartSection');
+      const startRowInput = document.getElementById('startRowInput');
+      
+      if (fixedStartSection && autoStartSection && startRowInput) {
+        // Set initial state based on UI
+        if (fixedStartSection.classList.contains('active')) {
+          window.appState.startMode = 'fixed';
+          window.appState.startRow = parseInt(startRowInput.value) || 2;
+        } else {
+          window.appState.startMode = 'auto';
+          window.appState.startRow = 1;
+        }
+        
+        console.log('Initial state:', window.appState);
+      }
+    });
+
+    // Define the run button click handler function
+    function handleRunButtonClick() {
+      // ... existing validation code ...
+
+      const config = {
+        modelType: modelButton?.dataset.modelType,
+        inputSheet: inputSheetSelect?.value,
+        inputColumn: inputColumnSelect?.value,
+        outputSheet: outputSheetSelect?.value,
+        outputColumn: outputColumnSelect?.value,
+        startRow: window.appState.startRow || 1,
+        rowMode: rowMode,
+        rowCount: rowCount,
+        prompt: promptInput?.value,
+        systemInstructions: systemInput?.value || '',
+        model: modelButton?.dataset.value || modelButton?.textContent.trim()
+      };
+
+      // ... rest of the function ...
+    }
+    // ... existing code ...
+
+    // Remove any existing state initialization
+    if (window.state) {
+      // Migrate existing state if it exists
+      window.appState = window.appState || window.state;
+      delete window.state;
+    } else {
+      // Initialize global state if it doesn't exist
+      window.appState = window.appState || {
+        startMode: 'auto',
+        startRow: 1,
+        rowMode: 'fixed',
+        rowCount: 1
+      };
+    }
+
+    // Handle fixed mode toggle
+    function handleFixedModeToggle() {
+      const fixedStartSection = document.getElementById('fixedStartSection');
+      const autoStartSection = document.getElementById('autoStartSection');
+      const startRowInput = document.getElementById('startRowInput');
+      
+      if (!fixedStartSection || !autoStartSection || !startRowInput) return;
+      
+      // Toggle active states
+      fixedStartSection.classList.toggle('active');
+      autoStartSection.classList.toggle('active');
+      
+      // Update state based on which mode is active
+      if (fixedStartSection.classList.contains('active')) {
+        window.appState.startMode = 'fixed';
+        window.appState.startRow = parseInt(startRowInput.value) || 2; // Default to 2 if no value
+        console.log('Fixed mode activated, startRow set to:', window.appState.startRow);
+      } else {
+        window.appState.startMode = 'auto';
+        window.appState.startRow = 1; // Reset to 1 in auto mode
+        console.log('Auto mode activated, startRow reset to:', window.appState.startRow);
+      }
+    }
+    // ... rest of the existing code ...
+
+    // Add keyboard shortcut handler
+    document.addEventListener('keydown', function(event) {
+      // Check for Command+Return (Mac) or Control+Enter (Windows)
+      if ((event.metaKey || event.ctrlKey) && (event.key === 'Enter' || event.key === 'Return')) {
+        event.preventDefault(); // Prevent default behavior
+        
+        // Get the run button
+        const runButton = document.getElementById('runButton');
+        if (runButton) {
+          console.log('Command+Return shortcut detected - triggering run button');
+          console.log('Running script with state:', window.appState);
+          
+          // Simulate a click on the run button instead of calling the handler directly
+          runButton.click();
+        }
       }
     });
     </script>

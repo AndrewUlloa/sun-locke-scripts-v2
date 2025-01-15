@@ -3,8 +3,8 @@ import 'google-apps-script';
 interface SpreadsheetRange {
   sheet: string;
   column: string;
-  startRow: number;
-  rowCount: number;
+  startRow: number | 'auto';
+  rowCount: number | 'all';
 }
 
 interface ProcessingResult {
@@ -45,11 +45,25 @@ export class SpreadsheetService {
       const sheet = spreadsheet.getSheetByName(range.sheet);
       if (!sheet) throw new Error(`Sheet ${range.sheet} not found`);
 
+      // Get the header row value
+      const headerRow = this.getHeaderRow(range.sheet);
+      
+      // If in auto mode, start from header row + 1
+      const effectiveStartRow = range.startRow === 'auto' ? headerRow + 1 : range.startRow;
+
+      // Calculate the actual number of rows to process
+      const lastRow = sheet.getLastRow();
+      const availableRows = lastRow - effectiveStartRow + 1;
+      const effectiveRowCount = range.rowCount === 'all' 
+        ? availableRows 
+        : Math.min(range.rowCount as number, availableRows);
+
+      // Get the column data
       const columnIndex = this.letterToColumn(range.column);
       const rangeA1 = sheet.getRange(
-        range.startRow,
+        effectiveStartRow,
         columnIndex,
-        range.rowCount,
+        effectiveRowCount,
         1
       );
 
@@ -57,6 +71,32 @@ export class SpreadsheetService {
     } catch (error: unknown) {
       console.error('Error getting data from range:', error);
       return [];
+    }
+  }
+
+  /**
+   * Gets the header row number from sheet properties or defaults to 1
+   */
+  private static getHeaderRow(sheetName: string): number {
+    try {
+      const userProperties = PropertiesService.getUserProperties();
+      const headerRowProp = userProperties.getProperty(`${sheetName}_headerRow`);
+      return headerRowProp ? parseInt(headerRowProp) : 1;
+    } catch (error) {
+      console.error('Error getting header row:', error);
+      return 1;
+    }
+  }
+
+  /**
+   * Sets the header row number for a sheet
+   */
+  static setHeaderRow(sheetName: string, headerRow: number): void {
+    try {
+      const userProperties = PropertiesService.getUserProperties();
+      userProperties.setProperty(`${sheetName}_headerRow`, headerRow.toString());
+    } catch (error) {
+      console.error('Error setting header row:', error);
     }
   }
 
@@ -69,15 +109,28 @@ export class SpreadsheetService {
       const sheet = spreadsheet.getSheetByName(range.sheet);
       if (!sheet) throw new Error(`Sheet ${range.sheet} not found`);
 
+      // Get the header row value
+      const headerRow = this.getHeaderRow(range.sheet);
+      
+      // If in auto mode, start from header row + 1
+      const effectiveStartRow = range.startRow === 'auto' ? headerRow + 1 : range.startRow;
+
+      // Calculate the actual number of rows to process
+      const lastRow = sheet.getLastRow();
+      const availableRows = lastRow - effectiveStartRow + 1;
+      const effectiveRowCount = range.rowCount === 'all' 
+        ? availableRows 
+        : Math.min(range.rowCount as number, availableRows);
+
       const columnIndex = this.letterToColumn(range.column);
       const rangeA1 = sheet.getRange(
-        range.startRow,
+        effectiveStartRow,
         columnIndex,
-        Math.min(range.rowCount, data.length),
+        Math.min(effectiveRowCount, data.length),
         1
       );
 
-      const values = data.slice(0, range.rowCount).map(value => [value]);
+      const values = data.slice(0, effectiveRowCount).map(value => [value]);
       rangeA1.setValues(values);
 
       return {

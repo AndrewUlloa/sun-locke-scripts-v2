@@ -161,3 +161,50 @@ function getAllSheetData() {
     throw new Error("Failed to load spreadsheet data");
   }
 }
+
+function setOpenAIKey() {
+  // DO NOT hardcode your API key here. Instead, use the Google Apps Script Project Properties
+  // To set your API key:
+  // 1. Go to your Google Apps Script project
+  // 2. Click on "Project Settings" (the gear icon)
+  // 3. Click on "Script Properties"
+  // 4. Click "Add Script Property"
+  // 5. Set "Property" as "OPENAI_API_KEY"
+  // 6. Set "Value" as your OpenAI API key
+  // 7. Click "Save"
+
+  // This function is just for documentation. The actual key should be set in Project Settings.
+  const apiKey =
+    PropertiesService.getScriptProperties().getProperty("OPENAI_API_KEY");
+  if (!apiKey) {
+    throw new Error(
+      "OpenAI API key not found in Script Properties. Please add it in Project Settings."
+    );
+  }
+  return true;
+}
+
+// Add a test function
+function testLanguageModel() {
+  const config = {
+    modelType: "language",
+    inputSheet: "Sheet1", // Replace with your actual sheet name
+    inputColumn: "A",
+    outputSheet: "Sheet1",
+    outputColumn: "B",
+    startRow: 2,
+    rowCount: 1,
+    prompt: "Write a short greeting",
+    systemInstructions: "You are a friendly assistant.",
+    model: "gpt-4",
+  };
+
+  try {
+    const result = PromptService.processCustomPrompt(config);
+    Logger.log("Test result:", result);
+    return result;
+  } catch (error) {
+    Logger.log("Test error:", error);
+    return { success: false, message: error.toString() };
+  }
+}
